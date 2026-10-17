@@ -1,0 +1,8 @@
+SCOLIA PWA
+
+1. Ouvrir https://github.com/Adempixels/Scolia
+2. Add file > Upload files : envoyer les 5 fichiers de ce dossier à la racine du dépôt (remplacer index.html).
+3. Commit changes. Attendre la publication GitHub Pages.
+4. Sur Android : Chrome > https://adempixels.github.io/Scolia/ > menu ⋮ > Installer l’application (ou Ajouter à l’écran d’accueil).
+
+IMPORTANT : cette version reste une démo locale. Les notes ne se synchronisent pas entre appareils. Les identifiants intégrés au HTML sont publics sur GitHub Pages. Ne pas saisir de véritables données scolaires.
