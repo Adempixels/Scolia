@@ -45,17 +45,52 @@ body{background:linear-gradient(155deg,#edf8f1 0%,#fff 52%,#fff1f1 100%)}
 .media-preview{display:block;max-width:100%;max-height:140px;margin:8px 0;border-radius:9px}
 </style></head><body>
 <section id="login" class="login"><div class="panel"><div class="logo">🇩🇿</div><h1>Bienvenue sur Scolia</h1><p class="muted">Votre espace scolaire, simplement.</p><label>Identifiant<input class="field" id="username" autocomplete="username" placeholder="Votre identifiant"></label><label>Mot de passe<input class="field" id="password" type="password" autocomplete="current-password" placeholder="Votre mot de passe"></label><p id="loginError" style="color:#ba3047"></p><button class="primary wide" onclick="login()">Se connecter →</button><p class="muted" style="font-size:12px">Démo familiale avec données fictives uniquement. Les comptes HTML ne sécurisent pas les données en ligne.</p></div></section>
-<div id="app" class="app hidden"><aside class="sidebar"><div class="brand">Scolia</div><button class="nav active" data-tab="notes" onclick="tab('notes')">📘 Notes</button><button class="nav" data-tab="qcm" onclick="tab('qcm')">🧠 QCM</button><button class="nav" data-tab="bulletins" onclick="tab('bulletins')">📄 Bulletins</button><button class="nav" data-tab="mots" onclick="tab('mots')">✉️ Mots</button><button class="nav hidden" id="appreciationsNav" data-tab="appreciations" onclick="tab('appreciations')">📝 Appréciations</button><button class="nav" data-tab="notifications" onclick="tab('notifications')">🔔 Alertes</button><button class="nav" onclick="logout()">↪ Quitter</button></aside><main class="main"><div class="top"><div><h1 id="pageTitle">Notes</h1><div class="muted" id="welcome"></div></div><button class="bell" onclick="tab('notifications')">🔔<span id="alertDot" class="dot hidden"></span></button></div><div class="dz-banner" aria-hidden="true"></div><div id="content"></div></main></div><div id="modalHost"></div><div id="toast" class="toast hidden"></div>
+<div id="app" class="app hidden"><aside class="sidebar"><div class="brand">Scolia</div><button class="nav active" data-tab="notes" onclick="tab('notes')">📘 Notes</button><button class="nav" data-tab="qcm" onclick="tab('qcm')">🧠 Évaluations en ligne</button><button class="nav" data-tab="cours" onclick="tab('cours')">📚 Cours</button><button class="nav" data-tab="bulletins" onclick="tab('bulletins')">📄 Bulletins</button><button class="nav" data-tab="messages" onclick="tab('messages')">💬 Messagerie <span id="messageCount"></span></button><button class="nav" data-tab="mots" onclick="tab('mots')">✉️ Mots</button><button class="nav hidden" id="appreciationsNav" data-tab="appreciations" onclick="tab('appreciations')">📝 Appréciations</button><button class="nav" data-tab="notifications" onclick="tab('notifications')">🔔 Alertes</button><button class="nav" onclick="logout()">↪ Quitter</button></aside><main class="main"><div class="top"><div><h1 id="pageTitle">Notes</h1><div class="muted" id="welcome"></div></div><button class="bell" onclick="tab('notifications')">🔔<span id="alertDot" class="dot hidden"></span></button></div><div class="dz-banner" aria-hidden="true"></div><div id="content"></div></main></div><div id="modalHost"></div><div id="toast" class="toast hidden"></div>
 <script>
 // Démonstration uniquement : des mots de passe dans un HTML public ne sont PAS sécurisés.
 const accounts=[{id:'elsahraoui',password:'Prof2026!',name:'M. El Sahraoui',role:'prof'},{id:'sahli',password:'Prof2026!',name:'M. Sahli',role:'prof'},{id:'sahliremplacant',password:'Prof2026!',name:'M. Sahli remplaçant',role:'prof'},{id:'gueblaoui',password:'Prof2026!',name:'M. Gueblaoui',role:'prof'},...['abdelrahman','ahmed','assia','leah','mohamed','nolan'].map(id=>({id,password:'Scolia2026!',name:id[0].toUpperCase()+id.slice(1),role:'eleve'}))];
 const students=accounts.filter(x=>x.role==='eleve'),subjects=['Musique','Arts plastiques','Sport','Football','Technologie'],levels={vert:'Très bonne maîtrise',bleu:'Maîtrise satisfaisante',jaune:'Maîtrise fragile',rouge:'Maîtrise insuffisante'};
 const classNames={'6A':'6ème A','6B':'6ème B'};const classOf=id=>['abdelrahman','ahmed','assia'].includes(id)?'6A':'6B';let selectedClass='6A';const classStudents=()=>students.filter(st=>classOf(st.id)===selectedClass);const classTeacher=c=>c==='6A'?'M. El Sahraoui':'M. Sahli';const currentWindow=()=>data.appWindows?.[selectedClass]||data.appWindow||{active:false,start:'',end:'',semester:'1'};const SESSION_KEY='scolia_session_v2';let data={evaluations:[],mots:[],alerts:[]},user=null,semester='1',subject='Musique',currentTab='notes';
 // Aucune donnée scolaire stockée localement : Firebase uniquement.
-data.quizzes??=[];data.quizAttempts??=[];data.seenEvaluations??={};data.appreciations??={};data.appWindow??={active:false,start:'',end:'',semester:'1'};
+data.courses??=[];data.quizzes??=[];data.messages??=[];data.quizAttempts??=[];data.seenEvaluations??={};data.appreciations??={};data.appWindow??={active:false,start:'',end:'',semester:'1'};
 function save(){if(!window.scoliaCloudReady){toast('Firebase non connecté : enregistrement impossible');return;}window.scoliaCloudSave(structuredClone(data)).catch(e=>{console.error(e);toast('Échec Firebase : '+(e.code||e.message));})}function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}function notify(message,recipient){data.alerts.push({id:uid(),recipient,message,at:new Date().toISOString(),seen:false})}function toast(s){let t=document.getElementById('toast');t.textContent=s;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),3500)}
-function login(){let id=document.getElementById('username').value.trim().toLowerCase(),pw=document.getElementById('password').value;user=accounts.find(a=>a.id===id&&a.password===pw)||null;if(!user){document.getElementById('loginError').textContent='Identifiant ou mot de passe incorrect';return}sessionStorage.setItem(SESSION_KEY,user.id);showLoggedIn();return;}function showLoggedIn(){document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');document.getElementById('welcome').textContent=user.name+' · '+(user.role==='prof'?'Professeur':'Élève');selectedClass=user.role==='eleve'?classOf(user.id):(user.id==='sahli'?'6B':'6A');if(user.id==='gueblaoui')subject='Football';semester=studentSemester();document.getElementById('appreciationsNav').classList.toggle('hidden',user.role!=='prof');tab('notes')}function logout(){sessionStorage.removeItem(SESSION_KEY);user=null;document.getElementById('app').classList.add('hidden');document.getElementById('login').classList.remove('hidden');document.getElementById('password').value=''}function tab(t){currentTab=t;document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));document.getElementById('pageTitle').textContent={notes:'Notes & compétences',mots:'Mots',bulletins:'Bulletins',qcm:'QCM',notifications:'Notifications',appreciations:'Appréciations'}[t];render()}
-function render(){if(!user)return;document.getElementById('alertDot').classList.toggle('hidden',!data.alerts.some(a=>a.recipient===user.id&&!a.seen));if(currentTab==='notes')renderNotes();else if(currentTab==='bulletins')renderBulletins();else if(currentTab==='qcm')renderQCM();else if(currentTab==='mots')renderMots();else if(currentTab==='appreciations')renderAppreciations();else renderAlerts()}
+function login(){let id=document.getElementById('username').value.trim().toLowerCase(),pw=document.getElementById('password').value;user=accounts.find(a=>a.id===id&&a.password===pw)||null;if(!user){document.getElementById('loginError').textContent='Identifiant ou mot de passe incorrect';return}sessionStorage.setItem(SESSION_KEY,user.id);showLoggedIn();return;}function showLoggedIn(){document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');document.getElementById('welcome').textContent=user.name+' · '+(user.role==='prof'?'Professeur':'Élève');selectedClass=user.role==='eleve'?classOf(user.id):(user.id==='sahli'?'6B':'6A');if(user.id==='gueblaoui')subject='Football';semester=studentSemester();document.getElementById('appreciationsNav').classList.toggle('hidden',user.role!=='prof');tab('notes')}function logout(){sessionStorage.removeItem(SESSION_KEY);user=null;document.getElementById('app').classList.add('hidden');document.getElementById('login').classList.remove('hidden');document.getElementById('password').value=''}function tab(t){currentTab=t;document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));document.getElementById('pageTitle').textContent={notes:'Notes & compétences',mots:'Mots',messages:'Messagerie',bulletins:'Bulletins',qcm:'Évaluations en ligne',cours:'Cours',notifications:'Notifications',appreciations:'Appréciations'}[t];render()}
+function render(){if(!user)return;const mc=document.getElementById('messageCount');if(mc)mc.textContent=(data.messages||[]).filter(m=>m.to===user.id&&!m.readBy?.includes(user.id)).length? '🔵':'';document.getElementById('alertDot').classList.toggle('hidden',!data.alerts.some(a=>a.recipient===user.id&&!a.seen));if(currentTab==='notes')renderNotes();else if(currentTab==='bulletins')renderBulletins();else if(currentTab==='qcm')renderQCM();else if(currentTab==='cours')renderCours();else if(currentTab==='messages')renderMessages();else if(currentTab==='mots')renderMots();else if(currentTab==='appreciations')renderAppreciations();else renderAlerts()}
+
+// Messagerie familiale : fils élève ↔ professeur, avec réponse directe.
+const messageTeachers=['elsahraoui','sahli','gueblaoui'];
+let messageSending=false;
+function canViewThread(studentId,teacherId){return user&&(user.role==='eleve'?user.id===studentId:user.id===teacherId)}
+function threadKey(studentId,teacherId){return studentId+'__'+teacherId}
+function renderMessages(){
+ const root=document.getElementById('content');
+ const all=(data.messages||[]).filter(m=>user.role==='eleve'?m.studentId===user.id:m.teacherId===user.id);
+ const ids=[...new Set(all.map(m=>m.threadId))];
+ const teacherOpts=messageTeachers.map(id=>accounts.find(a=>a.id===id)).filter(Boolean);
+ root.innerHTML=`<div class="card"><h2>💬 Messagerie Scolia</h2><p class="muted">Échanges entre élèves et professeurs. Les messages sont synchronisés sur les appareils.</p>${user.role==='eleve'?`<label>Choisir le professeur<select id="msgTeacher" class="field">${teacherOpts.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('')}</select></label><button class="primary" onclick="openNewStudentMessage()">✉️ Écrire un message</button>`:''}</div><div class="card"><h3>Mes conversations</h3>${ids.length?ids.map(id=>{
+ const msgs=all.filter(m=>m.threadId===id).sort((a,b)=>a.at.localeCompare(b.at));const last=msgs[msgs.length-1];const other=accounts.find(a=>a.id===(user.role==='eleve'?last.teacherId:last.studentId));const unread=msgs.filter(m=>m.to===user.id&&!m.readBy?.includes(user.id)).length;
+ return `<div class="word"><strong>${esc(other?.name||'Conversation')}</strong> ${unread?`<span class="chip bleu">${unread} nouveau(x)</span>`:''}<p class="muted">${esc(last.text.slice(0,120))}</p><button class="secondary" onclick="openMessageThread('${last.studentId}','${last.teacherId}')">Ouvrir et répondre →</button></div>`;
+ }).join(''):'<p class="muted">Aucune conversation pour le moment.</p>'}</div>`;
+}
+function openNewStudentMessage(){if(user.role!=='eleve')return;const teacherId=document.getElementById('msgTeacher')?.value;if(!messageTeachers.includes(teacherId))return;openMessageThread(user.id,teacherId)}
+function openMessageThread(studentId,teacherId){
+ if(!canViewThread(studentId,teacherId))return toast('Conversation non autorisée');
+ const other=accounts.find(a=>a.id===(user.role==='eleve'?teacherId:studentId));
+ const threadId=threadKey(studentId,teacherId);
+ const msgs=(data.messages||[]).filter(m=>m.threadId===threadId).sort((a,b)=>a.at.localeCompare(b.at));
+ modal({title:'💬 '+esc(other?.name||'Messagerie'),body:`<div style="max-height:48vh;overflow:auto">${msgs.length?msgs.map(m=>`<div class="word" style="margin:8px 0;border-left:4px solid ${m.from===user.id?'#087e4b':'#d83b49'}"><strong>${esc(accounts.find(a=>a.id===m.from)?.name||'Utilisateur')}</strong><span class="count"> · ${new Date(m.at).toLocaleString('fr-FR')}</span><p style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(m.text)}</p></div>`).join(''):'<p class="muted">Commence cette conversation.</p>'}</div><label>Répondre au message<textarea class="field" id="messageText" rows="4" maxlength="1500" placeholder="Écris ton message ici..."></textarea></label><button class="primary wide" onclick="sendThreadMessage('${studentId}','${teacherId}')">📨 Envoyer le message</button>`});
+ const unread=msgs.filter(m=>m.to===user.id&&!m.readBy?.includes(user.id)).map(m=>m.id);
+ if(unread.length&&window.scoliaCloudMarkMessagesRead)window.scoliaCloudMarkMessagesRead(unread,user.id).catch(e=>console.error(e));
+}
+async function sendThreadMessage(studentId,teacherId){
+ if(messageSending||!canViewThread(studentId,teacherId))return;
+ if(!window.scoliaCloudReady)return toast('Firebase non connecté');
+ const body=document.getElementById('messageText')?.value.trim();if(!body)return toast('Écris ton message');
+ const message={id:uid(),threadId:threadKey(studentId,teacherId),studentId,teacherId,from:user.id,to:user.role==='eleve'?teacherId:studentId,text:body.slice(0,1500),at:new Date().toISOString(),readBy:[user.id]};
+ messageSending=true;
+ try{await window.scoliaCloudSendMessage(message);closeModal();renderMessages();toast('Message envoyé !')}catch(e){console.error(e);toast('Envoi impossible : '+(e.code||e.message))}finally{messageSending=false}
+}
+
 function renderNotes(){let filters=`<div class="toolbar"><select class="field" onchange="semester=this.value;render()"><option value="1" ${semester==='1'?'selected':''}>Semestre 1</option><option value="2" ${semester==='2'?'selected':''}>Semestre 2</option></select><select class="field" onchange="subject=this.value;render()">${subjects.map(s=>`<option ${subject===s?'selected':''}>${s}</option>`).join('')}</select></div>`;let c=document.getElementById('content');if(user.role==='prof'){c.innerHTML=filters+`<div class="card"><h2>Tableau des élèves</h2><p class="muted">Clique sur ✎ pour créer une évaluation pour un élève.</p><div class="grid">${students.map(s=>`<div class="student"><div class="studentname"><span class="avatar">${s.name[0]}</span><strong>${s.name}</strong></div><button class="pen" title="Évaluer ${s.name}" onclick="openEvalForm('${s.id}')">✎</button></div>`).join('')}</div></div>`+`<div class="card"><h2>Évaluations publiées</h2>${evalCards(data.evaluations.filter(e=>e.semester===semester&&e.subject===subject))}</div>`}else{c.innerHTML=filters+`<div class="card"><h2>Mes évaluations</h2><p class="muted">Clique sur une évaluation pour voir les compétences.</p>${evalCards(data.evaluations.filter(e=>e.student===user.id&&e.semester===semester&&e.subject===subject))}</div>`}}
 function evalCards(list){if(!list.length)return '<p class="muted">Aucune évaluation pour le moment.</p>';return list.slice().reverse().map(e=>`<div class="eval" onclick="viewEval('${e.id}')"><strong>${esc(e.title)}</strong> <span class="muted">· ${esc(e.date)}</span>${user.role==='prof'?`<p class="count">${esc(students.find(s=>s.id===e.student)?.name||'')}</p>`:''}<div class="chips">${e.skills.map(x=>`<span class="chip ${x.level}">${esc(x.label)} · ${esc(levels[x.level])}</span>`).join('')}</div></div>`).join('')}
 function modal(html){document.getElementById('modalHost').innerHTML=`<div class="modalwrap" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modalhead"><h2>${html.title}</h2><button class="close" onclick="closeModal()">✕</button></div>${html.body}</div></div>`}function closeModal(){document.getElementById('modalHost').innerHTML=''}
@@ -100,7 +135,7 @@ function openBulkEval(){if(user.role!=='prof'||!teacherAllowed(subject))return t
 function addBulkSkill(){let r=document.getElementById('bulkSkills');if(r.children.length>=10)return toast('Maximum 10 compétences');let d=document.createElement('div');d.className='skillline';d.innerHTML=`<input class="field bulkSkill" style="flex:1;min-width:180px;margin:4px 0" maxlength="120" placeholder="Nom de la compétence" oninput="renderBulkRoster()"><button class="danger" onclick="this.parentElement.remove();renderBulkRoster()" title="Supprimer">✕</button>`;r.append(d);renderBulkRoster()}
 function renderBulkRoster(){let box=document.getElementById('bulkRoster');if(!box)return;let names=[...document.querySelectorAll('.bulkSkill')].map((x,i)=>({label:x.value.trim()||`Compétence ${i+1}`,i}));let previous={};let prevGrades={};box.querySelectorAll('[data-grade-student]').forEach(x=>prevGrades[x.dataset.gradeStudent+':'+x.dataset.gradeType]=x.value);box.querySelectorAll('select[data-student]').forEach(s=>previous[s.dataset.student+':'+s.dataset.skill]=s.value);box.innerHTML=`<h3>Notation des élèves</h3>${classStudents().map(st=>`<div class="bulkrow"><strong>${esc(st.name)}</strong><div>${selectedClass==='6A'?`<div class="gradeinputs"><label>Note<input class="field" type="number" min="0" step="0.25" data-grade-student="${st.id}" data-grade-type="score" value="${esc(prevGrades[st.id+':score']||'')}" placeholder="Note"></label><label>Sur<input class="field" type="number" min="1" step="0.25" data-grade-student="${st.id}" data-grade-type="max" value="${esc(prevGrades[st.id+':max']||'20')}"></label><label>Coef<input class="field" type="number" min="0.25" step="0.25" data-grade-student="${st.id}" data-grade-type="coef" value="${esc(prevGrades[st.id+':coef']||'1')}"></label></div>`:''}${names.map(n=>`<label style="display:block;font-size:12px;color:#65718c">${esc(n.label)}<select class="field" data-student="${st.id}" data-skill="${n.i}" aria-label="${esc(st.name)} : ${esc(n.label)}"><option value="">— Non évalué —</option>${colorOrder.map(k=>`<option value="${k}" ${previous[st.id+':'+n.i]===k?'selected':''}>${colorNames[k]} · ${esc(levels[k])}</option>`).join('')}</select></label>`).join('')}</div></div>`).join('')}`}
 function publishBulk(){if(!window.scoliaCloudReady)return toast('Attends la connexion à Firebase');if(user.role!=='prof'||!teacherAllowed(subject))return;let title=document.getElementById('bulkTitle').value.trim(),date=document.getElementById('bulkDate').value,skills=[...document.querySelectorAll('.bulkSkill')].map(x=>x.value.trim());if(!title||!date||!skills.length||skills.some(x=>!x))return toast('Indique un titre, une date et le nom de chaque compétence');let entries=classStudents().map(st=>({student:st.id,skills:skills.map((label,i)=>({label,level:document.querySelector(`select[data-student="${st.id}"][data-skill="${i}"]`)?.value})).filter(x=>x.level)}));if(entries.some(e=>!e.skills.length))return toast('Attribue au moins une pastille à chaque élève');if(selectedClass==='6A'){for(const e of entries){const v=t=>document.querySelector(`[data-grade-student="${e.student}"][data-grade-type="${t}"]`)?.value;const score=Number(v('score')),max=Number(v('max')),coef=Number(v('coef'));if(!v('score')||!Number.isFinite(score)||!Number.isFinite(max)||!Number.isFinite(coef)||score<0||max<=0||score>max||coef<=0)return toast('Vérifie les notes, barèmes et coefficients des 3 élèves');e.grade={score,max,coef}}}let groupId=uid();entries.forEach(e=>{data.evaluations.push({id:uid(),groupId,student:e.student,title,date,skills:e.skills,semester,subject,author:user.name,...(e.grade?{grade:e.grade}:{})});notify('Nouvelle évaluation : '+title,e.student)});save();closeModal();render();toast('Évaluation publiée pour la classe !')}
-function viewEval(id){let e=data.evaluations.find(x=>x.id===id);if(!e)return;modal({title:esc(e.title),body:`<p class="muted">${esc(e.subject)} · ${esc(e.date)} · Semestre ${esc(e.semester)}</p><p class="muted">${user.role==='prof'?esc(students.find(s=>s.id===e.student)?.name)+' · ':''}Publié par ${esc(e.author)}</p>${gradeHtml(e)?`<div class="gradebox">Note : ${gradeHtml(e)}</div>${user.role==='prof'?`<button class="secondary" onclick="editQuizGrade('${e.id}')">✎ Modifier la note</button>`:''}`:''}${e.skills.map(s=>`<div class="word"><div class="skillline"><span class="pastille ${s.level}"></span><strong>${esc(s.label)}</strong></div><span class="count">${esc(levels[s.level])}</span></div>`).join('')}`})}
+function viewEval(id){let e=data.evaluations.find(x=>x.id===id);if(!e)return;modal({title:esc(e.title),body:`<p class="muted">${esc(e.subject)} · ${esc(e.date)} · Semestre ${esc(e.semester)}</p><p class="muted">${user.role==='prof'?esc(students.find(s=>s.id===e.student)?.name)+' · ':''}Publié par ${esc(e.author)}</p>${gradeHtml(e)?`<div class="gradebox">Note : ${gradeHtml(e)}</div>`:''}${e.skills.map(s=>`<div class="word"><div class="skillline"><span class="pastille ${s.level}"></span><strong>${esc(s.label)}</strong></div><span class="count">${esc(levels[s.level])}</span></div>`).join('')}`})}
 
 // Appréciations : seule la direction (M. El Sahraoui) active la période.
 function appKey(sem,teacher,student){return [sem,teacher,student].join('|')}
@@ -136,6 +171,58 @@ function renderBulletins(){
  document.getElementById('content').innerHTML=toolbar+`<p class="muted bulletin-intro">Bulletin ${isProf?'prévisualisé':'consultable'} à partir des évaluations et appréciations enregistrées dans Firebase. ${selectedClass==='6A'?'Moyennes pondérées par coefficient sur 20.':'Classe évaluée uniquement par compétences.'}</p>`+bulletinFor(bulletinStudent,bulletinSemester);
 }
 
+
+// Cours publiés par les enseignants : démonstration familiale
+function renderCours(){
+ const isProf=user.role==='prof',classId=isProf?selectedClass:classOf(user.id);
+ const filtered=(data.courses||[]).filter(c=>!c.deleted&&c.classId===classId&&c.semester===semester);
+ const subjectsList=isProf?subjects.filter(teacherAllowed):subjects;
+ const c=document.getElementById('content');
+ c.innerHTML=`<div class="toolbar">${isProf?`<label>Classe<select class="field" onchange="selectedClass=this.value;renderCours()"><option value="6A" ${classId==='6A'?'selected':''}>6ème A</option><option value="6B" ${classId==='6B'?'selected':''}>6ème B</option></select></label>`:''}<label>Semestre<select class="field" onchange="semester=this.value;renderCours()"><option value="1" ${semester==='1'?'selected':''}>Semestre 1</option><option value="2" ${semester==='2'?'selected':''}>Semestre 2</option></select></label></div>${isProf?`<div class="card"><h2>📚 Publier un cours</h2><p class="muted">Rédige une leçon pour les élèves de ta classe.</p><button class="primary" onclick="newCourse()">+ Créer un cours</button></div>`:''}<div class="card"><h2>${isProf?'Cours publiés':'Mes cours'}</h2>${filtered.length?filtered.slice().reverse().map(x=>`<div class="eval"><strong>${esc(x.title)}</strong><p class="muted">${esc(x.subject)} · ${esc(x.author)} · ${esc(x.date||'')}</p><button class="secondary" onclick="openCourse('${x.id}')">📖 Lire le cours</button> ${isProf?`<button class="danger" onclick="deleteCourse('${x.id}')">Supprimer</button>`:''}</div>`).join(''):'<p class="muted">Aucun cours publié pour ce semestre.</p>'}</div>`;
+}
+function newCourse(){
+ if(user.role!=='prof')return;
+ modal({title:'📚 Nouveau cours',body:`<label>Titre du cours<input id="courseTitle" class="field" maxlength="120" placeholder="Ex. Les règles du judo"></label><label>Matière<select id="courseSubject" class="field">${subjects.filter(teacherAllowed).map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('')}</select></label><p class="muted">Classe : ${esc(classNames[selectedClass])} · Semestre ${esc(semester)}</p><label>Contenu de la leçon<textarea id="courseBody" class="field" rows="12" maxlength="15000" placeholder="Écris ton cours ici : définitions, exemples, consignes..."></textarea></label><div class="grid"><label>Couleur du texte<select id="courseColor" class="field"><option value="#173a2c">Vert foncé</option><option value="#087e4b">Vert algérien</option><option value="#c92f43">Rouge</option><option value="#2856b5">Bleu</option><option value="#212121">Noir</option></select></label><label>Couleur du fond<select id="courseBackground" class="field"><option value="#ffffff">Blanc</option><option value="#e8f8ed">Vert clair</option><option value="#fff0f1">Rose clair</option><option value="#edf2ff">Bleu clair</option><option value="#fff6d9">Jaune clair</option></select></label></div><label>Fichier PDF à joindre (facultatif, 180 Ko maximum)<input id="coursePDF" class="field" type="file" accept="application/pdf"></label><p class="muted">Le PDF est joint au cours et peut être ouvert par les élèves. Pour les gros PDF, un stockage de fichiers sécurisé sera nécessaire.</p><button class="primary wide" onclick="publishCourse()">Publier le cours</button>`});
+}
+let courseSaving=false;
+async function publishCourse(){
+ if(user.role!=='prof'||!window.scoliaCloudReady||courseSaving)return;
+ const title=document.getElementById('courseTitle')?.value.trim(),body=document.getElementById('courseBody')?.value.trim(),subject=document.getElementById('courseSubject')?.value;
+ if(!title||!body||!teacherAllowed(subject))return toast('Complète le titre, la matière et la leçon');
+ let pdf='',pdfName='';
+ const file=document.getElementById('coursePDF')?.files?.[0];
+ if(file){
+  if(file.type!=='application/pdf'||file.size>180000)return toast('PDF uniquement, maximum 180 Ko');
+  try{pdf=await fileAsDataURL(file);pdfName=file.name.slice(0,100)}catch{return toast('Lecture du PDF impossible')}
+ }
+ const color=document.getElementById('courseColor').value,background=document.getElementById('courseBackground').value;
+ const entry={id:uid(),title,body,color,background,pdf,pdfName,subject,classId:selectedClass,semester,author:user.name,authorId:user.id,date:new Date().toISOString().slice(0,10)};
+ if(JSON.stringify(entry).length>350000)return toast('Cours trop volumineux pour Firebase');
+ courseSaving=true;
+ try{await window.scoliaCloudAddCourse(entry);closeModal();toast('Cours publié !');renderCours()}catch(e){console.error(e);toast('Erreur Firebase : '+(e.code||e.message))}finally{courseSaving=false}
+}
+function openCourse(id){
+ const c=(data.courses||[]).find(x=>x.id===id&&!x.deleted);if(!c||!user)return;
+ if(user.role==='eleve'&&c.classId!==classOf(user.id))return;
+ modal({title:'📖 '+esc(c.title),body:`<p class="muted">${esc(c.subject)} · ${esc(c.author)} · Semestre ${esc(c.semester)}</p><div style="white-space:pre-wrap;line-height:1.75;overflow-wrap:anywhere;padding:20px;border-radius:12px;color:${['#173a2c','#087e4b','#c92f43','#2856b5','#212121'].includes(c.color)?c.color:'#173a2c'};background:${['#ffffff','#e8f8ed','#fff0f1','#edf2ff','#fff6d9'].includes(c.background)?c.background:'#ffffff'}">${esc(c.body)}</div>${c.pdf&&/^data:application\/pdf;base64,/.test(c.pdf)?`<p><button class="primary" onclick="openCoursePDF('${c.id}')">📄 Ouvrir le PDF joint : ${esc(c.pdfName||'Document')}</button></p>`:''}<p><button class="secondary" onclick="window.print()">🖨️ Imprimer</button></p>`});
+}
+function openCoursePDF(id){
+ const c=(data.courses||[]).find(x=>x.id===id&&!x.deleted);
+ if(!c||!c.pdf||!/^data:application\/pdf;base64,/.test(c.pdf))return;
+ if(user.role==='eleve'&&c.classId!==classOf(user.id))return;
+ try{
+  const parts=c.pdf.split(','),binary=atob(parts[1]),bytes=new Uint8Array(binary.length);
+  for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+  const url=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}));
+  const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),60000);
+ }catch(e){toast('Impossible d’ouvrir le PDF')}
+}
+async function deleteCourse(id){
+ if(user.role!=='prof'||!confirm('Supprimer ce cours ?'))return;
+ try{await window.scoliaCloudDeleteCourse(id);toast('Cours supprimé');renderCours()}catch(e){toast('Erreur Firebase : '+(e.code||e.message))}
+}
+
 // ===== SCOLIA QCM : démonstration familiale, Firebase partagé =====
 let quizDraft=[], activeQuizId=null, quizSaving=false;
 function newMark(e){return user?.role==='eleve'&&!data.seenEvaluations?.[user.id]?.[e.id]?'<span class="new-underline" title="Nouvelle évaluation"></span>':''}
@@ -143,26 +230,48 @@ function quizClass(){return user.role==='eleve'?classOf(user.id):selectedClass}
 function renderQCM(){
  const cls=quizClass(),isProf=user.role==='prof';
  const bar=isProf?`<div class="toolbar"><label>Classe <select class="field" onchange="selectedClass=this.value;render()"><option value="6A" ${cls==='6A'?'selected':''}>6ème A</option><option value="6B" ${cls==='6B'?'selected':''}>6ème B</option></select></label></div>`:`<p class="pill-status">${esc(classNames[cls])}</p>`;
- const quizzes=(data.quizzes||[]).filter(q=>q.classId===cls&&(!q.deleted)&&(isProf||q.published));
+ const quizzes=(data.quizzes||[]).filter(q=>q.classId===cls&&!q.deleted&&(isProf?q.authorId===user.id:q.published));
  const cards=quizzes.length?quizzes.slice().reverse().map(q=>{
-  const done=(data.quizAttempts||[]).some(a=>a.quizId===q.id&&a.student===user.id);
+  const done=(data.quizAttempts||[]).some(a=>a.quizId===q.id&&a.student===user.id&&!a.superseded);
+  const retry=(q.retries||[]).includes(user.id);const available=quizAvailable(q);
   const completed=(data.quizAttempts||[]).filter(a=>a.quizId===q.id).length;
-  return `<div class="eval"><div class="top" style="margin-bottom:8px"><strong>${esc(q.title)}</strong><span class="qcm-tag">${esc(q.subject)} · S${esc(q.semester)}</span></div><p class="muted">${q.questions.length} questions · ${q.questions.reduce((n,x)=>n+Number(x.points||0),0)} points ${isProf?'· '+completed+' réponse(s)':''}</p>${isProf?`<button class="secondary" onclick="showQuizDetails('${q.id}')">📊 Résultats</button> <button class="danger" onclick="deleteQuiz('${q.id}')">Supprimer</button>`:done?'<span class="qcm-tag">✓ Terminé — consulte Notes</span>':`<button class="primary" onclick="startQuiz('${q.id}')">Commencer le QCM</button>`}</div>`
+  return `<div class="eval"><div class="top" style="margin-bottom:8px"><strong>${esc(q.title)}</strong><span class="qcm-tag">${esc(q.subject)} · S${esc(q.semester)}</span></div><p class="muted">${q.questions.length} questions · ${q.questions.reduce((n,x)=>n+Number(x.points||0),0)} points ${isProf?'· '+completed+' réponse(s)':''}${q.duration?` · ⏱ ${q.duration} min`:''}</p>${isProf?`<button class="secondary" onclick="showQuizDetails('${q.id}')">📊 Copies / Statistiques</button> <button class="danger" onclick="deleteQuiz('${q.id}')">Supprimer</button>`:done&&!retry?'<span class="qcm-tag">✓ Terminé — consulte Notes</span>':!available?'<span class="qcm-tag">🔒 Pas encore disponible ou fermé</span>':`<button class="primary" onclick="startQuiz('${q.id}')">${done?'Rattrapage':'Commencer le QCM'}</button>`}</div>`
  }).join(''):'<div class="empty">Aucun QCM pour cette classe.</div>';
  document.getElementById('content').innerHTML=bar+(isProf?`<div class="card"><h2>Créer un QCM</h2><p class="muted">Questions, réponses, points et compétences. Images et sons possibles.</p><button class="primary" onclick="createQuiz()">+ Créer un QCM</button></div>`:'')+`<div class="card"><h2>${isProf?'QCM de la classe':'Mes QCM'}</h2>${cards}</div>`;
 }
 function createQuiz(){
  if(user.role!=='prof')return;
  quizDraft=[{id:uid(),text:'',points:1,answers:['','','',''],correct:0,skills:'',image:'',audio:''}];
- document.getElementById('content').innerHTML=`<div class="card"><div class="top"><h2>🧠 Nouveau QCM</h2><button class="secondary" onclick="renderQCM()">Retour</button></div><div class="grid"><label>Titre<input class="field" id="qTitle" maxlength="100" placeholder="Ex. Technologie : les objets"></label><label>Classe<select class="field" id="qClass"><option value="6A" ${selectedClass==='6A'?'selected':''}>6ème A</option><option value="6B" ${selectedClass==='6B'?'selected':''}>6ème B</option></select></label><label>Matière<select class="field" id="qSubject">${subjects.filter(teacherAllowed).map(m=>`<option value="${esc(m)}" ${subject===m?'selected':''}>${esc(m)}</option>`).join('')}</select></label><label>Semestre<select class="field" id="qSemester"><option value="1" ${semester==='1'?'selected':''}>Semestre 1</option><option value="2" ${semester==='2'?'selected':''}>Semestre 2</option></select></label><label>Coefficient (6ème A)<input class="field" id="qCoef" type="number" min="0.25" max="20" step="0.25" value="1"></label></div><div class="notice">Les compétences sont séparées par des virgules. Le barème des couleurs est automatique : 🟢 80 %, 🔵 60 %, 🟡 40 %, 🔴 en dessous.</div><div id="quizEditor"></div><div class="qcm-actions"><button class="secondary" onclick="addQuizQuestion()">+ Ajouter une question</button><button class="primary" id="qPublish" onclick="publishQuiz()">Publier le QCM</button></div></div>`;
+ document.getElementById('content').innerHTML=`<div class="card"><div class="top"><h2>🧠 Nouveau QCM</h2><button class="secondary" onclick="renderQCM()">Retour</button></div><div class="grid"><label>Titre<input class="field" id="qTitle" maxlength="100" placeholder="Ex. Technologie : les objets"></label><label>Classe<select class="field" id="qClass"><option value="6A" ${selectedClass==='6A'?'selected':''}>6ème A</option><option value="6B" ${selectedClass==='6B'?'selected':''}>6ème B</option></select></label><label>Matière<select class="field" id="qSubject">${subjects.filter(teacherAllowed).map(m=>`<option value="${esc(m)}" ${subject===m?'selected':''}>${esc(m)}</option>`).join('')}</select></label><label>Semestre<select class="field" id="qSemester"><option value="1" ${semester==='1'?'selected':''}>Semestre 1</option><option value="2" ${semester==='2'?'selected':''}>Semestre 2</option></select></label><label>Points par question<input class="field" id="qPoints" type="number" min="0.25" max="100" step="0.25" value="2"></label><label>Compétence(s) du QCM (séparées par des virgules)<input class="field" id="qSkills" maxlength="300" placeholder="Ex. Connaître les règles du judo"></label><label>Coefficient (6ème A)<input class="field" id="qCoef" type="number" min="0.25" max="20" step="0.25" value="1"></label><label>Durée maximale<select class="field" id="qDuration"><option value="0">Sans limite</option>${[5,10,15,20,30].map(n=>`<option value="${n}">${n} minutes</option>`).join('')}</select></label><label>Ouverture (facultatif)<input class="field" id="qOpen" type="datetime-local"></label><label>Fermeture (facultatif)<input class="field" id="qClose" type="datetime-local"></label><label><input type="checkbox" id="qShuffle" checked> Mélanger l'ordre des questions</label></div><div class="notice">Durée, mélange et programmation disponibles. Les points et compétences se définissent une seule fois pour tout le QCM. Le barème des couleurs est automatique : 🟢 80 %, 🔵 60 %, 🟡 40 %, 🔴 en dessous.</div><div class="notice"><strong>🤖 IA Scolia :</strong> prépare des questions avec ChatGPT puis colle le JSON généré ci-dessous. La création entièrement automatique sur le site nécessitera un service IA sécurisé.</div><div class="toolbar"><button class="secondary" onclick="copyScoliaAIPrompt()">🤖 Copier une demande à l’IA</button></div><label>Importer les questions générées (JSON)<textarea id="qAIJSON" class="field" rows="3" placeholder='[{"question":"...","answers":["A","B","C","D"],"correct":0}]'></textarea></label><button class="secondary" onclick="importScoliaAI()">✨ Importer les questions IA</button><div id="quizEditor"></div><div class="qcm-actions"><button class="secondary" onclick="addQuizQuestion()">+ Ajouter une question</button><button class="primary" id="qPublish" onclick="publishQuiz()">Publier le QCM</button></div></div>`;
  renderQuizEditor();
+}
+function copyScoliaAIPrompt(){
+ const subject=document.getElementById('qSubject')?.value||'Sport';
+ const prompt=`Génère 10 questions de QCM niveau 6ème en ${subject}. Réponds UNIQUEMENT par un tableau JSON de 10 objets au format [{"question":"Question ?","answers":["réponse A","réponse B","réponse C","réponse D"],"correct":0}]. La valeur correct est l'indice de la bonne réponse (0 à 3). Questions simples, précises et sans ambiguïté.`;
+ if(navigator.clipboard?.writeText){navigator.clipboard.writeText(prompt).then(()=>toast('Demande IA copiée : colle-la dans ChatGPT')).catch(()=>promptCopyFallback(prompt))}
+ else promptCopyFallback(prompt);
+}
+function promptCopyFallback(v){window.prompt('Copie cette demande pour ton IA :',v)}
+function importScoliaAI(){
+ if(user.role!=='prof')return;
+ syncQuizDraft();
+ try{
+  const raw=document.getElementById('qAIJSON').value.trim().replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'');
+  const rows=JSON.parse(raw);
+  if(!Array.isArray(rows)||rows.length<1||rows.length>30)throw Error('Entre 1 et 30 questions');
+  const imported=rows.map((r,i)=>{
+   const answers=r.answers||r.reponses;
+   const correct=Number(r.correct??r.bonneReponse);
+   if(typeof (r.question||r.text)!=='string'||!Array.isArray(answers)||answers.length!==4||answers.some(a=>typeof a!=='string'||!a.trim())||!Number.isInteger(correct)||correct<0||correct>3)throw Error('Format invalide à la question '+(i+1));
+   return {id:uid(),text:(r.question||r.text).slice(0,400),points:1,answers:answers.map(a=>a.slice(0,250)),correct,skills:'',image:'',audio:''};
+  });
+  quizDraft=imported;renderQuizEditor();toast(imported.length+' questions importées. Vérifie-les avant publication.');
+ }catch(e){toast('Import impossible : '+e.message)}
 }
 function syncQuizDraft(){
  quizDraft.forEach((q,i)=>{
   const root=document.getElementById('qed_'+i);if(!root)return;
   q.text=root.querySelector('[data-qtext]').value;
-  q.points=Number(root.querySelector('[data-points]').value);
-  q.skills=root.querySelector('[data-skills]').value;
   q.answers=[...root.querySelectorAll('[data-answer]')].map(x=>x.value);
   q.correct=Number(root.querySelector('[data-correct]:checked')?.value??0);
   // Les fichiers chargés restent dans quizDraft entre deux questions.
@@ -170,7 +279,7 @@ function syncQuizDraft(){
 }
 function renderQuizEditor(){
  const el=document.getElementById('quizEditor');if(!el)return;
- el.innerHTML=quizDraft.map((q,i)=>`<section class="qcm-question" id="qed_${i}"><div class="top"><h3>Question ${i+1}</h3>${quizDraft.length>1?`<button class="danger" onclick="removeQuizQuestion(${i})">Supprimer</button>`:''}</div><label>Énoncé<textarea class="field" data-qtext rows="2" maxlength="400">${esc(q.text)}</textarea></label><label>Points de la question<input class="field" data-points type="number" min="0.25" max="100" step="0.25" value="${q.points}"></label><strong>Réponses — coche la bonne</strong>${q.answers.map((a,j)=>`<div class="qcm-answer-row"><input type="radio" name="correct_${i}" data-correct value="${j}" ${q.correct===j?'checked':''} aria-label="Bonne réponse ${j+1}"><input class="field" data-answer maxlength="250" placeholder="Réponse ${j+1}" value="${esc(a)}"></div>`).join('')}<label>Compétence(s) évaluée(s) — séparées par des virgules<input class="field" data-skills maxlength="300" placeholder="Ex. Identifier les matériaux, Analyser un objet" value="${esc(q.skills)}"></label><label>Image depuis l'ordinateur (facultatif)<input class="field" type="file" accept="image/png,image/jpeg,image/webp" onchange="uploadQuizMedia(${i},'image',this)"></label>${q.image?`<img class="media-preview" src="${esc(q.image)}" alt="Aperçu"><button class="secondary" onclick="removeQuizMedia(${i},'image')">Retirer l'image</button>`:''}<label>Son depuis l'ordinateur (facultatif)<input class="field" type="file" accept="audio/mpeg,audio/ogg,audio/wav,audio/mp4,audio/webm" onchange="uploadQuizMedia(${i},'audio',this)"></label>${q.audio?`<audio controls src="${esc(q.audio)}"></audio><button class="secondary" onclick="removeQuizMedia(${i},'audio')">Retirer le son</button>`:''}<p class="qcm-small">Fichiers de démonstration uniquement. Image compressée automatiquement ; son de 90 Ko maximum. La taille totale Firebase est limitée.</p></section>`).join('');
+ el.innerHTML=quizDraft.map((q,i)=>`<section class="qcm-question" id="qed_${i}"><div class="top"><h3>Question ${i+1}</h3>${quizDraft.length>1?`<button class="danger" onclick="removeQuizQuestion(${i})">Supprimer</button>`:''}</div><label>Énoncé<textarea class="field" data-qtext rows="2" maxlength="400">${esc(q.text)}</textarea></label><strong>Réponses — coche la bonne</strong>${q.answers.map((a,j)=>`<div class="qcm-answer-row"><input type="radio" name="correct_${i}" data-correct value="${j}" ${q.correct===j?'checked':''} aria-label="Bonne réponse ${j+1}"><input class="field" data-answer maxlength="250" placeholder="Réponse ${j+1}" value="${esc(a)}"></div>`).join('')}<label>Image depuis l'ordinateur (facultatif)<input class="field" type="file" accept="image/png,image/jpeg,image/webp" onchange="uploadQuizMedia(${i},'image',this)"></label>${q.image?`<img class="media-preview" src="${esc(q.image)}" alt="Aperçu"><button class="secondary" onclick="removeQuizMedia(${i},'image')">Retirer l'image</button>`:''}<label>Son depuis l'ordinateur (facultatif)<input class="field" type="file" accept="audio/mpeg,audio/ogg,audio/wav,audio/mp4,audio/webm" onchange="uploadQuizMedia(${i},'audio',this)"></label>${q.audio?`<audio controls src="${esc(q.audio)}"></audio><button class="secondary" onclick="removeQuizMedia(${i},'audio')">Retirer le son</button>`:''}<p class="qcm-small">Fichiers de démonstration uniquement. Image compressée automatiquement ; son de 90 Ko maximum. La taille totale Firebase est limitée.</p></section>`).join('');
 }
 function addQuizQuestion(){syncQuizDraft();if(quizDraft.length>=30)return toast('Maximum 30 questions');quizDraft.push({id:uid(),text:'',points:1,answers:['','','',''],correct:0,skills:'',image:'',audio:''});renderQuizEditor()}
 function removeQuizQuestion(i){syncQuizDraft();quizDraft.splice(i,1);renderQuizEditor()}
@@ -210,52 +319,69 @@ async function publishQuiz(){
  if(quizSaving||!window.scoliaCloudReady)return toast('Attends la connexion à Firebase');if(user.role!=='prof')return;
  syncQuizDraft();const title=document.getElementById('qTitle').value.trim(),classId=document.getElementById('qClass').value,mat=document.getElementById('qSubject').value,sem=document.getElementById('qSemester').value,coef=Number(document.getElementById('qCoef').value);
  if(!title||!teacherAllowed(mat)||!['6A','6B'].includes(classId)||!(coef>0&&coef<=20))return toast('Vérifie le titre, la matière et le coefficient');
- const questions=quizDraft.map(q=>({...q,text:q.text.trim(),skills:q.skills.split(',').map(s=>s.trim()).filter(Boolean)}));
+ const duration=Number(document.getElementById('qDuration').value),opensAt=document.getElementById('qOpen').value,closesAt=document.getElementById('qClose').value,shuffle=document.getElementById('qShuffle').checked;
+ if(opensAt&&closesAt&&new Date(opensAt)>=new Date(closesAt))return toast('La fermeture doit être après l’ouverture');
+ const points=Number(document.getElementById('qPoints').value);
+ const commonSkills=document.getElementById('qSkills').value.split(',').map(x=>x.trim()).filter(Boolean);
+ if(!Number.isFinite(points)||points<=0||points>100||!commonSkills.length)return toast('Choisis les points et au moins une compétence pour le QCM');
+ const questions=quizDraft.map(q=>({...q,text:q.text.trim(),points,skills:[...commonSkills]}));
  if(questions.some(q=>!q.text||!Number.isFinite(q.points)||q.points<=0||q.points>100||q.answers.some(a=>!a.trim())||!q.skills.length||!safeMediaUrl(q.image)||!safeMediaUrl(q.audio)))return toast('Vérifie les questions, réponses, points et fichiers');
- const entry={id:uid(),title,classId,subject:mat,semester:sem,coef,author:user.name,authorId:user.id,createdAt:new Date().toISOString(),published:true,questions};
+ const entry={id:uid(),title,classId,subject:mat,semester:sem,coef,skills:commonSkills,pointsPerQuestion:points,author:user.name,authorId:user.id,createdAt:new Date().toISOString(),published:true,questions,duration,shuffle,opensAt:opensAt?new Date(opensAt).toISOString():null,closesAt:closesAt?new Date(closesAt).toISOString():null,retries:[]};
  if(JSON.stringify(entry).length>550000)return toast('QCM trop volumineux pour Firestore : réduis les images ou sons');
  quizSaving=true;const b=document.getElementById('qPublish');if(b)b.disabled=true;
  try{await window.scoliaCloudAddQuiz(entry);toast('QCM publié pour la '+classNames[classId]+' !');renderQCM()}catch(e){console.error(e);toast('Erreur Firebase : '+(e.code||e.message));if(b)b.disabled=false}finally{quizSaving=false}
 }
+let quizTimerHandle=null,quizSession=null;
+function quizAvailable(q){const now=Date.now();return (!q.opensAt||now>=Date.parse(q.opensAt))&&(!q.closesAt||now<=Date.parse(q.closesAt))}
+function clearQuizTimer(){if(quizTimerHandle)clearInterval(quizTimerHandle);quizTimerHandle=null}
 function startQuiz(id){
- if(user.role!=='eleve')return;const q=(data.quizzes||[]).find(x=>x.id===id&&x.published&&!x.deleted&&x.classId===classOf(user.id));if(!q)return;
- if((data.quizAttempts||[]).some(a=>a.quizId===id&&a.student===user.id))return toast('QCM déjà terminé');
- activeQuizId=id;
- document.getElementById('content').innerHTML=`<div class="card"><h2>${esc(q.title)}</h2><p class="muted">${esc(q.subject)} · ${q.questions.length} questions · ${q.questions.reduce((n,x)=>n+Number(x.points),0)} points</p><form id="qAnswerForm" onsubmit="event.preventDefault();finishQuiz()">${q.questions.map((item,i)=>`<div class="qcm-question"><h3>${i+1}. ${esc(item.text)}</h3><p class="count">${item.points} point(s)</p>${item.image&&safeMediaUrl(item.image)?`<img class="qcm-media" src="${esc(item.image)}" alt="Illustration de la question" loading="lazy">`:''}${item.audio&&safeMediaUrl(item.audio)?`<audio class="qcm-sound" controls preload="none" src="${esc(item.audio)}"></audio>`:''}${item.answers.map((a,j)=>`<label class="qcm-answer"><input type="radio" name="qa_${i}" value="${j}"> ${esc(a)}</label>`).join('')}</div>`).join('')}<button type="submit" class="primary wide" id="qFinish">Terminer et envoyer mes réponses</button></form></div>`;
+ if(user.role!=='eleve')return;
+ const q=(data.quizzes||[]).find(x=>x.id===id&&x.published&&!x.deleted&&x.classId===classOf(user.id));if(!q||!quizAvailable(q))return toast('Évaluation non disponible');
+ const done=(data.quizAttempts||[]).some(a=>a.quizId===id&&a.student===user.id&&!a.superseded);
+ if(done&&!(q.retries||[]).includes(user.id))return toast('Évaluation déjà terminée');
+ clearQuizTimer();activeQuizId=id;
+ const key='scolia_qsession_'+id+'_'+user.id;let saved=null;
+ try{saved=JSON.parse(sessionStorage.getItem(key)||'null')}catch{}
+ const order=saved?.order?.length===q.questions.length?saved.order:q.questions.map((_,i)=>i);
+ if(!saved&&q.shuffle){for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]]}}
+ const startedAt=saved?.startedAt||Date.now();quizSession={id,key,order,startedAt};
+ sessionStorage.setItem(key,JSON.stringify(quizSession));
+ document.getElementById('content').innerHTML=`<div class="card"><h2>${esc(q.title)}</h2><p class="muted">${esc(q.subject)} · ${q.questions.length} questions · ${q.questions.reduce((n,x)=>n+Number(x.points),0)} points</p>${q.duration?'<p class="notice" id="quizCountdown" aria-live="polite">⏱ Chronomètre</p>':''}<form id="qAnswerForm" onsubmit="event.preventDefault();finishQuiz()">${order.map((original,i)=>{const item=q.questions[original];return `<div class="qcm-question"><h3>${i+1}. ${esc(item.text)}</h3><p class="count">${item.points} point(s)</p>${item.image&&safeMediaUrl(item.image)?`<img class="qcm-media" src="${esc(item.image)}" alt="Illustration" loading="lazy">`:''}${item.audio&&safeMediaUrl(item.audio)?`<audio class="qcm-sound" controls preload="none" src="${esc(item.audio)}"></audio>`:''}${item.answers.map((a,j)=>`<label class="qcm-answer"><input type="radio" name="qa_${original}" value="${j}"> ${esc(a)}</label>`).join('')}</div>`}).join('')}<button type="submit" class="primary wide" id="qFinish">Terminer et envoyer mes réponses</button></form></div>`;
+ if(q.duration){const tick=()=>{if(activeQuizId!==id){clearQuizTimer();return}const left=Math.max(0,Math.ceil((startedAt+q.duration*60000-Date.now())/1000));const el=document.getElementById('quizCountdown');if(el)el.textContent='⏱ Temps restant : '+Math.floor(left/60)+':'+String(left%60).padStart(2,'0');if(left<=0){clearQuizTimer();finishQuiz(true)}};tick();quizTimerHandle=setInterval(tick,1000)}
 }
 function levelFromPercent(p){return p>=80?'vert':p>=60?'bleu':p>=40?'jaune':'rouge'}
-async function finishQuiz(){
+async function finishQuiz(auto=false){
  if(!window.scoliaCloudReady)return toast('Firebase non connecté');if(user.role!=='eleve'||!activeQuizId||quizSaving)return;
  const q=(data.quizzes||[]).find(x=>x.id===activeQuizId&&x.published&&!x.deleted&&x.classId===classOf(user.id));if(!q)return toast('QCM introuvable');
  const answers=q.questions.map((_,i)=>document.querySelector(`input[name="qa_${i}"]:checked`)?.value);
- if(answers.some(x=>x===undefined))return toast('Réponds à toutes les questions avant de terminer');
+ if(!auto&&answers.some(x=>x===undefined))return toast('Réponds à toutes les questions avant de terminer');
  const total=q.questions.reduce((n,x)=>n+Number(x.points),0);let score=0;const skillTotals={};
- q.questions.forEach((item,i)=>{const good=Number(answers[i])===Number(item.correct),points=Number(item.points);if(good)score+=points;item.skills.forEach(label=>{skillTotals[label]??={score:0,max:0};skillTotals[label].max+=points;if(good)skillTotals[label].score+=points})});
+ q.questions.forEach((item,i)=>{const good=answers[i]!==undefined&&Number(answers[i])===Number(item.correct),points=Number(item.points);if(good)score+=points;item.skills.forEach(label=>{skillTotals[label]??={score:0,max:0};skillTotals[label].max+=points;if(good)skillTotals[label].score+=points})});
  const skills=Object.entries(skillTotals).map(([label,v])=>({label,level:levelFromPercent(100*v.score/v.max)}));
- const evalId=uid(),attempt={id:uid(),quizId:q.id,student:user.id,answers:answers.map(Number),evaluationId:evalId,at:new Date().toISOString()};
+ const evalId=uid(),attempt={id:uid(),quizId:q.id,student:user.id,answers:answers.map(x=>x===undefined?null:Number(x)),evaluationId:evalId,at:new Date().toISOString()};
  const evaluation={id:evalId,student:user.id,title:'QCM — '+q.title,date:new Date().toISOString().slice(0,10),skills,semester:q.semester,subject:q.subject,author:q.author,quizId:q.id,...(q.classId==='6A'?{grade:{score,max:total,coef:q.coef}}:{})};
- quizSaving=true;const btn=document.getElementById('qFinish');if(btn)btn.disabled=true;
- try{await window.scoliaCloudSubmitQuiz(attempt,evaluation);activeQuizId=null;document.getElementById('content').innerHTML=`<div class="card" style="text-align:center;padding:42px 20px"><h2>✅ QCM terminé !</h2><p>Tes réponses ont bien été enregistrées.</p><p><strong>📘 Va dans l'onglet « Notes » pour voir ta note et tes compétences.</strong></p><button class="primary" onclick="tab('notes')">Voir mes notes →</button></div>`;}catch(e){console.error(e);toast('Échec de l’envoi : '+(e.code||e.message));if(btn)btn.disabled=false}finally{quizSaving=false}
+ quizSaving=true;clearQuizTimer();const btn=document.getElementById('qFinish');if(btn)btn.disabled=true;
+ try{await window.scoliaCloudSubmitQuiz(attempt,evaluation);sessionStorage.removeItem(quizSession?.key||'');quizSession=null;activeQuizId=null;document.getElementById('content').innerHTML=`<div class="card" style="text-align:center;padding:42px 20px"><h2>✅ QCM terminé !</h2><p>Tes réponses ont bien été enregistrées.</p><p><strong>📘 Va dans l'onglet « Notes » pour voir ta note et tes compétences.</strong></p><button class="primary" onclick="tab('notes')">Voir mes notes →</button></div>`;}catch(e){console.error(e);toast('Échec de l’envoi : '+(e.code||e.message));if(btn)btn.disabled=false}finally{quizSaving=false}
 }
 function showQuizDetails(id){
  if(user.role!=='prof')return;
- const q=(data.quizzes||[]).find(x=>x.id===id);if(!q)return;
+ const q=(data.quizzes||[]).find(x=>x.id===id&&x.authorId===user.id);if(!q)return;
  const attempts=(data.quizAttempts||[]).filter(a=>a.quizId===id);
- modal({title:'📋 Copies — '+esc(q.title),body:`<p>${esc(classNames[q.classId])} · ${esc(q.subject)} · ${attempts.length} copie(s)</p>${students.filter(s=>classOf(s.id)===q.classId).map(st=>{
- const a=attempts.find(x=>x.student===st.id);
- return `<div class="word"><strong>${esc(st.name)}</strong> — ${a?'Terminé':'Non terminé'} ${a?`<button class="secondary" onclick="showStudentCopy('${q.id}','${a.id}')">Consulter la copie</button>`:''}</div>`;
+ modal({title:'📋 Copies — '+esc(q.title),body:`<p>${esc(classNames[q.classId])} · ${esc(q.subject)} · ${attempts.length} tentative(s)</p><button class="secondary" onclick="showQuizStats('${q.id}')">📊 Voir les statistiques</button>${students.filter(s=>classOf(s.id)===q.classId).map(st=>{
+ const a=attempts.filter(x=>x.student===st.id&&!x.superseded).at(-1);
+ return `<div class="word"><strong>${esc(st.name)}</strong> — ${a?'Terminé':'Non terminé'} ${a?`<button class="secondary" onclick="showStudentCopy('${q.id}','${a.id}')">Consulter la copie</button>`:''} <button class="secondary" onclick="grantQuizRetry('${q.id}','${st.id}')">🔄 Autoriser rattrapage</button></div>`;
  }).join('')}`});
 }
 function showStudentCopy(quizId,attemptId){
  if(user.role!=='prof')return;
- const q=(data.quizzes||[]).find(x=>x.id===quizId),a=(data.quizAttempts||[]).find(x=>x.id===attemptId);
+ const q=(data.quizzes||[]).find(x=>x.id===quizId&&x.authorId===user.id),a=(data.quizAttempts||[]).find(x=>x.id===attemptId);
  if(!q||!a)return;
  const st=students.find(x=>x.id===a.student),ev=data.evaluations.find(e=>e.id===a.evaluationId);
  let points=0,max=0;
  const rows=q.questions.map((item,i)=>{
-  const picked=Number(a.answers[i]),correct=Number(item.correct),ok=picked===correct;
+  const picked=a.answers[i],correct=Number(item.correct),ok=picked!==null&&picked!==undefined&&Number(picked)===correct;
   max+=Number(item.points);if(ok)points+=Number(item.points);
-  return `<div class="word"><strong>Question ${i+1} — ${esc(item.text)}</strong><div class="review-answer ${ok?'good':'bad'}">Réponse de l'élève : ${esc(item.answers[picked]??'Sans réponse')} ${ok?'✓':'✗'}</div><div class="review-answer good">Bonne réponse : ${esc(item.answers[correct])}</div><span class="count">${ok?Number(item.points):0} / ${Number(item.points)} point(s)</span></div>`;
+  return `<div class="word"><strong>Question ${i+1} — ${esc(item.text)}</strong><div class="review-answer ${ok?'good':'bad'}">Réponse de l'élève : ${esc((picked===null||picked===undefined?'Sans réponse':item.answers[picked]??'Sans réponse'))} ${ok?'✓':'✗'}</div><div class="review-answer good">Bonne réponse : ${esc(item.answers[correct])}</div><span class="count">${ok?Number(item.points):0} / ${Number(item.points)} point(s)</span></div>`;
  }).join('');
  const g=ev?.grade;
  modal({title:'Copie de '+esc(st?.name||a.student),body:`<p>${esc(q.title)} · ${esc(q.subject)}</p><p><strong>Résultat du QCM : ${points}/${max}</strong></p>${g?`<p>Note enregistrée : <strong>${esc(g.score)}/${esc(g.max)}</strong> · Coef. ${esc(g.coef)}</p><button class="primary" onclick="editQuizGrade('${ev.id}')">✎ Changer la note</button>`:`<p>Classe 6ème B : évaluation par compétences uniquement.</p>`}<h3>Réponses de l'élève</h3>${rows}<button class="secondary" onclick="showQuizDetails('${quizId}')">← Retour aux copies</button>`});
@@ -263,14 +389,14 @@ function showStudentCopy(quizId,attemptId){
 function editQuizGrade(evaluationId){
  if(user.role!=='prof')return;
  const e=data.evaluations.find(x=>x.id===evaluationId);
- if(!e?.grade||classOf(e.student)!=='6A')return toast('Modification réservée aux notes de 6ème A');
- modal({title:'✎ Corriger la note',body:`<p><strong>${esc(students.find(s=>s.id===e.student)?.name||'')}</strong> · ${esc(e.title)}</p><p class="muted">Note précédente : ${esc(e.grade.score)}/${esc(e.grade.max)}. Les compétences restent inchangées.</p><label>Nouvelle note<input id="editScore" class="field" type="number" min="0" max="${esc(e.grade.max)}" step="0.25" value="${esc(e.grade.score)}"></label><label>Coefficient<input id="editCoef" class="field" type="number" min="0.25" max="20" step="0.25" value="${esc(e.grade.coef)}"></label><label>Motif de la correction<input id="editReason" class="field" maxlength="200" placeholder="Ex. Erreur de saisie" required></label><button class="primary wide" onclick="saveQuizGrade('${evaluationId}')">Enregistrer la correction</button>`});
+ if(!e?.grade||classOf(e.student)!=='6A'||!(data.quizzes||[]).some(q=>q.id===e.quizId&&q.authorId===user.id))return toast('Modification réservée aux notes de 6ème A');
+ modal({title:'✎ Corriger la note',body:`<p><strong>${esc(students.find(s=>s.id===e.student)?.name||'')}</strong> · ${esc(e.title)}</p><p class="muted">Note précédente : ${esc(e.grade.score)}/${esc(e.grade.max)}. Les compétences calculées automatiquement restent inchangées.</p><label>Nouvelle note<input id="editScore" class="field" type="number" min="0" max="${esc(e.grade.max)}" step="0.25" value="${esc(e.grade.score)}"></label><label>Coefficient<input id="editCoef" class="field" type="number" min="0.25" max="20" step="0.25" value="${esc(e.grade.coef)}"></label><button class="primary wide" onclick="saveQuizGrade('${evaluationId}')">Enregistrer la correction</button>`});
 }
 async function saveQuizGrade(evaluationId){
  if(user.role!=='prof'||!window.scoliaCloudReady||quizSaving)return;
- const score=Number(document.getElementById('editScore')?.value),coef=Number(document.getElementById('editCoef')?.value),reason=document.getElementById('editReason')?.value.trim();
+ const score=Number(document.getElementById('editScore')?.value),coef=Number(document.getElementById('editCoef')?.value),reason='';
  const e=data.evaluations.find(x=>x.id===evaluationId);
- if(!e?.grade||!reason||!Number.isFinite(score)||score<0||score>e.grade.max||!Number.isFinite(coef)||coef<=0||coef>20)return toast('Vérifie la note, le coefficient et le motif');
+ if(!e?.grade||!(data.quizzes||[]).some(q=>q.id===e.quizId&&q.authorId===user.id)||!Number.isFinite(score)||score<0||score>e.grade.max||!Number.isFinite(coef)||coef<=0||coef>20)return toast('Vérifie la note, le coefficient et le motif');
  quizSaving=true;
  try{
   await window.scoliaCloudEditGrade(evaluationId,{score,coef,reason,editor:user.name,at:new Date().toISOString()});
@@ -278,7 +404,22 @@ async function saveQuizGrade(evaluationId){
  }catch(err){console.error(err);toast('Erreur Firebase : '+(err.code||err.message))}
  finally{quizSaving=false}
 }
-async function deleteQuiz(id){if(user.role!=='prof'||!confirm('Masquer ce QCM ? Les notes déjà obtenues seront conservées.'))return;try{await window.scoliaCloudDeleteQuiz(id);toast('QCM masqué')}catch(e){toast('Erreur Firebase : '+e.message)}}
+function showQuizStats(id){
+ if(user.role!=='prof')return;const q=(data.quizzes||[]).find(x=>x.id===id&&x.authorId===user.id);if(!q)return;
+ const attempts=(data.quizAttempts||[]).filter(a=>a.quizId===id&&!a.superseded),studentsCount=students.filter(st=>classOf(st.id)===q.classId).length;
+ const points=q.questions.reduce((n,x)=>n+Number(x.points),0),scores=attempts.map(a=>q.questions.reduce((n,item,i)=>n+(a.answers[i]!==null&&a.answers[i]!==undefined&&Number(a.answers[i])===Number(item.correct)?Number(item.points):0),0));
+ const mean=scores.length?(scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1):'—';
+ const rows=q.questions.map((item,i)=>{const right=attempts.filter(a=>a.answers[i]!==null&&a.answers[i]!==undefined&&Number(a.answers[i])===Number(item.correct)).length;return `<div class="word"><strong>${i+1}. ${esc(item.text)}</strong><p>${right}/${attempts.length} bonne(s) réponse(s) · ${attempts.length?Math.round(right/attempts.length*100):0}%</p></div>`}).join('');
+ modal({title:'📊 Statistiques — '+esc(q.title),body:`<p>Participants : <strong>${attempts.length}/${studentsCount}</strong></p><p>Moyenne : <strong>${mean}${scores.length?'/'+points:''}</strong></p><h3>Réussite par question</h3>${rows}<button class="secondary" onclick="showQuizDetails('${id}')">← Retour aux copies</button>`});
+}
+async function grantQuizRetry(quizId,studentId){
+ if(user.role!=='prof'||!window.scoliaCloudReady)return;
+ const q=(data.quizzes||[]).find(x=>x.id===quizId&&x.authorId===user.id);
+ if(!q||classOf(studentId)!==q.classId)return;
+ if(!confirm('Autoriser une nouvelle tentative pour cet élève ? La nouvelle note remplacera la précédente.'))return;
+ try{await window.scoliaCloudGrantRetry(quizId,studentId,user.id);toast('Rattrapage autorisé');closeModal()}catch(e){toast('Erreur : '+e.message)}
+}
+async function deleteQuiz(id){if(user.role!=='prof'||!(data.quizzes||[]).some(q=>q.id===id&&q.authorId===user.id)||!confirm('Masquer ce QCM ? Les notes déjà obtenues seront conservées.'))return;try{await window.scoliaCloudDeleteQuiz(id);toast('QCM masqué')}catch(e){toast('Erreur Firebase : '+e.message)}}
 </script><script type="module">
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
 import {getFirestore,doc,onSnapshot,runTransaction} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
@@ -296,13 +437,33 @@ window.scoliaCloudSave=async state=>runTransaction(db,async tx=>{
   appreciations:{...(old.appreciations||{}),...(state.appreciations||{})},
   appWindow:state.appWindow||old.appWindow||{active:false,start:'',end:'',semester:'1'},
   appWindows:{...(old.appWindows||{}),...(state.appWindows||{})},
+  courses:mergeById(old.courses,state.courses),
   quizzes:mergeById(old.quizzes,state.quizzes),
   quizAttempts:mergeById(old.quizAttempts,state.quizAttempts),
+  messages:mergeById(old.messages,state.messages),
   seenEvaluations:Object.fromEntries([...new Set([...Object.keys(old.seenEvaluations||{}),...Object.keys(state.seenEvaluations||{})])].map(k=>[k,{...(old.seenEvaluations?.[k]||{}),...(state.seenEvaluations?.[k]||{})}]))
  };
  tx.set(ref,{state:merged});
 });
 
+window.scoliaCloudSendMessage=entry=>runTransaction(db,async tx=>{
+ const snap=await tx.get(ref),old=snap.exists()?(snap.data().state||{}):{};
+ const list=old.messages||[];if(list.length>=400)throw Error('Limite de messages atteinte');
+ tx.set(ref,{state:{...old,messages:[...list,entry]}});
+});
+window.scoliaCloudMarkMessagesRead=(ids,reader)=>runTransaction(db,async tx=>{
+ const snap=await tx.get(ref),old=snap.exists()?(snap.data().state||{}):{};
+ tx.set(ref,{state:{...old,messages:(old.messages||[]).map(m=>ids.includes(m.id)&&m.to===reader?{...m,readBy:[...new Set([...(m.readBy||[]),reader])]}:m)}});
+});
+window.scoliaCloudAddCourse=entry=>runTransaction(db,async tx=>{
+ const snap=await tx.get(ref),old=snap.exists()?(snap.data().state||{}):{};
+ if((old.courses||[]).length>=100)throw Error('Limite de 100 cours atteinte');
+ tx.set(ref,{state:{...old,courses:[...(old.courses||[]),entry]}});
+});
+window.scoliaCloudDeleteCourse=id=>runTransaction(db,async tx=>{
+ const snap=await tx.get(ref),old=snap.exists()?(snap.data().state||{}):{};
+ tx.set(ref,{state:{...old,courses:(old.courses||[]).map(c=>c.id===id?{...c,deleted:true}:c)}});
+});
 window.scoliaCloudAddQuiz=entry=>runTransaction(db,async tx=>{
  const snap=await tx.get(ref),old=snap.exists()?(snap.data().state||{}):{};
  if((old.quizzes||[]).length>=80)throw Error('Limite de 80 QCM atteinte pour la démonstration');
@@ -310,21 +471,29 @@ window.scoliaCloudAddQuiz=entry=>runTransaction(db,async tx=>{
 });
 window.scoliaCloudSubmitQuiz=(attempt,evaluation)=>runTransaction(db,async tx=>{
  const snap=await tx.get(ref),old=snap.exists()?(snap.data().state||{}):{};
- if((old.quizAttempts||[]).some(a=>a.quizId===attempt.quizId&&a.student===attempt.student))throw Error('QCM déjà terminé');
+ const previous=(old.quizAttempts||[]).filter(a=>a.quizId===attempt.quizId&&a.student===attempt.student&&!a.superseded);
  const quiz=(old.quizzes||[]).find(q=>q.id===attempt.quizId&&!q.deleted&&q.published);
  if(!quiz)throw Error('QCM non disponible');
+ if(previous.length&&!(quiz.retries||[]).includes(attempt.student))throw Error('QCM déjà terminé');
+ const now=Date.now();if((quiz.opensAt&&now<Date.parse(quiz.opensAt))||(quiz.closesAt&&now>Date.parse(quiz.closesAt)))throw Error('Évaluation fermée');
  const alerts=[...(old.alerts||[]),{id:attempt.id+'alert',recipient:attempt.student,message:'Nouvelle évaluation QCM : '+quiz.title,at:attempt.at,seen:false}];
- tx.set(ref,{state:{...old,quizAttempts:[...(old.quizAttempts||[]),attempt],evaluations:[...(old.evaluations||[]),evaluation],alerts}});
+ tx.set(ref,{state:{...old,quizAttempts:[...(old.quizAttempts||[]).map(a=>previous.some(p=>p.id===a.id)?{...a,superseded:true}:a),attempt],evaluations:[...(old.evaluations||[]).filter(e=>!previous.some(p=>p.evaluationId===e.id)),evaluation],quizzes:(old.quizzes||[]).map(q=>q.id===quiz.id?{...q,retries:(q.retries||[]).filter(st=>st!==attempt.student)}:q),alerts}});
 });
 window.scoliaCloudEditGrade=(id,change)=>runTransaction(db,async tx=>{
  const snap=await tx.get(ref),old=snap.exists()?(snap.data().state||{}):{};
  const evaluation=(old.evaluations||[]).find(e=>e.id===id);
- if(!evaluation?.grade)throw Error('Note introuvable');
+ if(!evaluation?.grade||!evaluation.quizId)throw Error('Note QCM introuvable');
  const updated=(old.evaluations||[]).map(e=>e.id!==id?e:{
   ...e,grade:{...e.grade,score:change.score,coef:change.coef},
   correctionHistory:[...(e.correctionHistory||[]),{oldScore:e.grade.score,newScore:change.score,oldCoef:e.grade.coef,newCoef:change.coef,reason:change.reason,editor:change.editor,at:change.at}]
  });
  tx.set(ref,{state:{...old,evaluations:updated}});
+});
+window.scoliaCloudGrantRetry=(id,studentId,authorId)=>runTransaction(db,async tx=>{
+ const snap=await tx.get(ref),old=snap.exists()?(snap.data().state||{}):{};
+ const q=(old.quizzes||[]).find(q=>q.id===id&&q.authorId===authorId);
+ if(!q)throw Error('Évaluation introuvable');
+ tx.set(ref,{state:{...old,quizzes:(old.quizzes||[]).map(x=>x.id===id?{...x,retries:[...new Set([...(x.retries||[]),studentId])]}:x)}});
 });
 window.scoliaCloudDeleteQuiz=id=>runTransaction(db,async tx=>{
  const snap=await tx.get(ref),old=snap.exists()?(snap.data().state||{}):{};
