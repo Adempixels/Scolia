@@ -15,19 +15,47 @@
 .bulletin-toolbar label{font-size:13px;font-weight:700;color:#53627f}.bulletin-toolbar .field{display:block;margin:5px 0 0}.bulletin-page{background:#fff;border:1px solid #e1e7f1;border-radius:15px;padding:28px;max-width:920px;margin:auto}.bulletin-head{display:flex;align-items:center;gap:14px;border-bottom:3px solid #3159d9;padding-bottom:15px}.bulletin-emblem{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:#3159d9;color:#fff;font-size:27px;font-weight:800}.bulletin-head h2{margin:0;font-size:20px}.bulletin-head p{margin:5px 0;color:#697891}.bulletin-meta{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:12px;margin:23px 0}.bulletin-meta div{background:#f4f7fd;padding:12px;border-radius:10px}.bulletin-meta span{display:block;font-size:10px;font-weight:800;color:#72809a;margin-bottom:7px}.bulletin-meta strong{font-size:14px}.bulletin-page h3{font-size:17px;margin:24px 0 12px}.bulletin-table{width:100%;border-collapse:collapse}.bulletin-table th{background:#eaf0ff;color:#2447a0;text-align:left}.bulletin-table th,.bulletin-table td{padding:13px;border:1px solid #e1e7f1}.bulletin-table td small{display:block;color:#72809a;margin-top:5px}.bulletin-colors{display:flex;gap:12px;flex-wrap:wrap}.bulletin-legend{display:inline-flex;gap:5px;align-items:center;font-size:13px}.bulletin-hint{font-size:12px;color:#65738a;line-height:1.7}.bulletin-app{border-left:3px solid #3159d9;padding:9px 14px;background:#f8faff;margin:10px 0}.bulletin-app p{white-space:pre-wrap;margin:7px 0}.bulletin-footer{border-top:1px solid #e2e8f2;margin-top:28px;padding-top:12px;color:#72809a;font-size:11px}@media(max-width:720px){.bulletin-page{padding:15px}.bulletin-meta{grid-template-columns:1fr}.bulletin-head h2{font-size:16px}.bulletin-table th,.bulletin-table td{padding:7px;font-size:12px}.bulletin-colors{gap:6px}}@media print{body{background:white!important}.sidebar,.top,.bulletin-toolbar,.bulletin-intro,#login,#modalHost,#toast{display:none!important}.app{display:block!important}.main{padding:0!important;max-width:none!important}.card{box-shadow:none}.bulletin-page{border:0!important;padding:0!important;max-width:none!important}.bulletin-head,.bulletin-table,.bulletin-meta,.bulletin-app{-webkit-print-color-adjust:exact;print-color-adjust:exact}#content>*:not(.bulletin-page){display:none!important}}
 
 .grade{font-size:14px;color:#3159d9;white-space:nowrap}.grade.low{font-weight:900;color:#17213b}.gradebox{padding:10px 12px;background:#f4f7fd;border-radius:10px;margin:9px 0}.gradeinputs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.gradeinputs .field{margin:4px 0 12px}@media(max-width:450px){.gradeinputs{grid-template-columns:1fr 1fr}}
+
+/* QCM et nouvelles évaluations */
+.qcm-question{padding:17px;border:1px solid #e0e7f5;border-radius:15px;margin:14px 0;background:#fff}.qcm-question h3{margin:0 0 12px}.qcm-answer{display:block;padding:12px;border:1px solid #e1e8f4;border-radius:10px;margin:7px 0;cursor:pointer}.qcm-answer:has(input:checked){background:#eaf0ff;border-color:#3159d9}.qcm-media{max-width:100%;max-height:230px;border-radius:12px;margin:12px 0;display:block}.qcm-sound{width:100%;margin:10px 0}.qcm-actions{display:flex;gap:8px;flex-wrap:wrap}.qcm-tag{display:inline-block;background:#eef3ff;color:#3159d9;border-radius:20px;padding:5px 10px;font-size:12px}.new-underline{display:block;width:100%;height:4px;background:#2488ff;border-radius:5px;margin-top:7px}.qcm-answer-row{display:flex;gap:8px;align-items:center;margin:7px 0}.qcm-answer-row .field{margin:0}.qcm-answer-row input[type=radio]{width:19px;height:19px;flex-shrink:0}.qcm-small{font-size:12px;color:#71809c}
+
+/* Identité visuelle Scolia Algérie */
+:root{--dzgreen:#087e4b;--dzred:#d83b49;color:#16372c;background:#f4faf6}
+body{background:linear-gradient(155deg,#edf8f1 0%,#fff 52%,#fff1f1 100%)}
+.login{background:radial-gradient(circle at 5% 5%,#c8ebd7,transparent 55%),radial-gradient(circle at 95% 90%,#ffe1e4,transparent 45%),#fff}
+.primary,.logo,.bulletin-emblem{background:#087e4b;color:white}
+.primary:hover{background:#05653d}
+.brand{color:#087e4b}.brand:before{content:'🇩🇿 ';font-size:21px}
+.sidebar{border-top:5px solid #087e4b}
+.nav.active,.secondary,.bell,.pen{background:#e2f4e9;color:#087e4b}
+.field:focus{outline-color:#087e4b}
+.subject-item.chosen{background:#eaf8ef;border-left-color:#087e4b}
+.marks-table th{background:#087e4b}
+.bulletin-head{border-bottom-color:#087e4b}
+.bulletin-table th{background:#e3f3e9;color:#075e3a}
+.bulletin-app{border-left-color:#d83b49;background:#fff7f7}
+.bulletin-emblem:after{content:'☪';font-size:14px;margin-left:3px;color:#fff}
+.pill-status,.qcm-tag{background:#e2f4e9;color:#087e4b}
+.card{border-top:2px solid #e7f3e9}
+.top h1:after{content:' 🇩🇿';font-size:.55em}
+.dz-banner{background:linear-gradient(90deg,#087e4b 0 33.33%,#fff 33.33% 66.66%,#d83b49 66.66%);height:7px;border-radius:8px;margin-bottom:18px}
+.review-answer{padding:8px 10px;border-radius:8px;margin:5px 0;background:#f3f7f4}
+.review-answer.good{border-left:4px solid #087e4b}
+.review-answer.bad{border-left:4px solid #d83b49}
+.media-preview{display:block;max-width:100%;max-height:140px;margin:8px 0;border-radius:9px}
 </style></head><body>
-<section id="login" class="login"><div class="panel"><div class="logo">S</div><h1>Bienvenue sur Scolia</h1><p class="muted">Votre espace scolaire, simplement.</p><label>Identifiant<input class="field" id="username" autocomplete="username" placeholder="Votre identifiant"></label><label>Mot de passe<input class="field" id="password" type="password" autocomplete="current-password" placeholder="Votre mot de passe"></label><p id="loginError" style="color:#ba3047"></p><button class="primary wide" onclick="login()">Se connecter →</button><p class="muted" style="font-size:12px">Démo familiale avec données fictives uniquement. Les comptes HTML ne sécurisent pas les données en ligne.</p></div></section>
-<div id="app" class="app hidden"><aside class="sidebar"><div class="brand">◈ Scolia</div><button class="nav active" data-tab="notes" onclick="tab('notes')">📘 Notes</button><button class="nav" data-tab="bulletins" onclick="tab('bulletins')">📄 Bulletins</button><button class="nav" data-tab="mots" onclick="tab('mots')">✉️ Mots</button><button class="nav hidden" id="appreciationsNav" data-tab="appreciations" onclick="tab('appreciations')">📝 Appréciations</button><button class="nav" data-tab="notifications" onclick="tab('notifications')">🔔 Alertes</button><button class="nav" onclick="logout()">↪ Quitter</button></aside><main class="main"><div class="top"><div><h1 id="pageTitle">Notes</h1><div class="muted" id="welcome"></div></div><button class="bell" onclick="tab('notifications')">🔔<span id="alertDot" class="dot hidden"></span></button></div><div id="content"></div></main></div><div id="modalHost"></div><div id="toast" class="toast hidden"></div>
+<section id="login" class="login"><div class="panel"><div class="logo">🇩🇿</div><h1>Bienvenue sur Scolia</h1><p class="muted">Votre espace scolaire, simplement.</p><label>Identifiant<input class="field" id="username" autocomplete="username" placeholder="Votre identifiant"></label><label>Mot de passe<input class="field" id="password" type="password" autocomplete="current-password" placeholder="Votre mot de passe"></label><p id="loginError" style="color:#ba3047"></p><button class="primary wide" onclick="login()">Se connecter →</button><p class="muted" style="font-size:12px">Démo familiale avec données fictives uniquement. Les comptes HTML ne sécurisent pas les données en ligne.</p></div></section>
+<div id="app" class="app hidden"><aside class="sidebar"><div class="brand">Scolia</div><button class="nav active" data-tab="notes" onclick="tab('notes')">📘 Notes</button><button class="nav" data-tab="qcm" onclick="tab('qcm')">🧠 QCM</button><button class="nav" data-tab="bulletins" onclick="tab('bulletins')">📄 Bulletins</button><button class="nav" data-tab="mots" onclick="tab('mots')">✉️ Mots</button><button class="nav hidden" id="appreciationsNav" data-tab="appreciations" onclick="tab('appreciations')">📝 Appréciations</button><button class="nav" data-tab="notifications" onclick="tab('notifications')">🔔 Alertes</button><button class="nav" onclick="logout()">↪ Quitter</button></aside><main class="main"><div class="top"><div><h1 id="pageTitle">Notes</h1><div class="muted" id="welcome"></div></div><button class="bell" onclick="tab('notifications')">🔔<span id="alertDot" class="dot hidden"></span></button></div><div class="dz-banner" aria-hidden="true"></div><div id="content"></div></main></div><div id="modalHost"></div><div id="toast" class="toast hidden"></div>
 <script>
 // Démonstration uniquement : des mots de passe dans un HTML public ne sont PAS sécurisés.
 const accounts=[{id:'elsahraoui',password:'Prof2026!',name:'M. El Sahraoui',role:'prof'},{id:'sahli',password:'Prof2026!',name:'M. Sahli',role:'prof'},{id:'sahliremplacant',password:'Prof2026!',name:'M. Sahli remplaçant',role:'prof'},{id:'gueblaoui',password:'Prof2026!',name:'M. Gueblaoui',role:'prof'},...['abdelrahman','ahmed','assia','leah','mohamed','nolan'].map(id=>({id,password:'Scolia2026!',name:id[0].toUpperCase()+id.slice(1),role:'eleve'}))];
 const students=accounts.filter(x=>x.role==='eleve'),subjects=['Musique','Arts plastiques','Sport','Football','Technologie'],levels={vert:'Très bonne maîtrise',bleu:'Maîtrise satisfaisante',jaune:'Maîtrise fragile',rouge:'Maîtrise insuffisante'};
 const classNames={'6A':'6ème A','6B':'6ème B'};const classOf=id=>['abdelrahman','ahmed','assia'].includes(id)?'6A':'6B';let selectedClass='6A';const classStudents=()=>students.filter(st=>classOf(st.id)===selectedClass);const classTeacher=c=>c==='6A'?'M. El Sahraoui':'M. Sahli';const currentWindow=()=>data.appWindows?.[selectedClass]||data.appWindow||{active:false,start:'',end:'',semester:'1'};const SESSION_KEY='scolia_session_v2';let data={evaluations:[],mots:[],alerts:[]},user=null,semester='1',subject='Musique',currentTab='notes';
 // Aucune donnée scolaire stockée localement : Firebase uniquement.
-data.appreciations??={};data.appWindow??={active:false,start:'',end:'',semester:'1'};
+data.quizzes??=[];data.quizAttempts??=[];data.seenEvaluations??={};data.appreciations??={};data.appWindow??={active:false,start:'',end:'',semester:'1'};
 function save(){if(!window.scoliaCloudReady){toast('Firebase non connecté : enregistrement impossible');return;}window.scoliaCloudSave(structuredClone(data)).catch(e=>{console.error(e);toast('Échec Firebase : '+(e.code||e.message));})}function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}function notify(message,recipient){data.alerts.push({id:uid(),recipient,message,at:new Date().toISOString(),seen:false})}function toast(s){let t=document.getElementById('toast');t.textContent=s;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),3500)}
-function login(){let id=document.getElementById('username').value.trim().toLowerCase(),pw=document.getElementById('password').value;user=accounts.find(a=>a.id===id&&a.password===pw)||null;if(!user){document.getElementById('loginError').textContent='Identifiant ou mot de passe incorrect';return}sessionStorage.setItem(SESSION_KEY,user.id);showLoggedIn();return;}function showLoggedIn(){document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');document.getElementById('welcome').textContent=user.name+' · '+(user.role==='prof'?'Professeur':'Élève');selectedClass=user.role==='eleve'?classOf(user.id):(user.id==='sahli'?'6B':'6A');if(user.id==='gueblaoui')subject='Football';semester=studentSemester();document.getElementById('appreciationsNav').classList.toggle('hidden',user.role!=='prof');tab('notes')}function logout(){sessionStorage.removeItem(SESSION_KEY);user=null;document.getElementById('app').classList.add('hidden');document.getElementById('login').classList.remove('hidden');document.getElementById('password').value=''}function tab(t){currentTab=t;document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));document.getElementById('pageTitle').textContent={notes:'Notes & compétences',mots:'Mots',bulletins:'Bulletins',notifications:'Notifications',appreciations:'Appréciations'}[t];render()}
-function render(){if(!user)return;document.getElementById('alertDot').classList.toggle('hidden',!data.alerts.some(a=>a.recipient===user.id&&!a.seen));if(currentTab==='notes')renderNotes();else if(currentTab==='bulletins')renderBulletins();else if(currentTab==='mots')renderMots();else if(currentTab==='appreciations')renderAppreciations();else renderAlerts()}
+function login(){let id=document.getElementById('username').value.trim().toLowerCase(),pw=document.getElementById('password').value;user=accounts.find(a=>a.id===id&&a.password===pw)||null;if(!user){document.getElementById('loginError').textContent='Identifiant ou mot de passe incorrect';return}sessionStorage.setItem(SESSION_KEY,user.id);showLoggedIn();return;}function showLoggedIn(){document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');document.getElementById('welcome').textContent=user.name+' · '+(user.role==='prof'?'Professeur':'Élève');selectedClass=user.role==='eleve'?classOf(user.id):(user.id==='sahli'?'6B':'6A');if(user.id==='gueblaoui')subject='Football';semester=studentSemester();document.getElementById('appreciationsNav').classList.toggle('hidden',user.role!=='prof');tab('notes')}function logout(){sessionStorage.removeItem(SESSION_KEY);user=null;document.getElementById('app').classList.add('hidden');document.getElementById('login').classList.remove('hidden');document.getElementById('password').value=''}function tab(t){currentTab=t;document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));document.getElementById('pageTitle').textContent={notes:'Notes & compétences',mots:'Mots',bulletins:'Bulletins',qcm:'QCM',notifications:'Notifications',appreciations:'Appréciations'}[t];render()}
+function render(){if(!user)return;document.getElementById('alertDot').classList.toggle('hidden',!data.alerts.some(a=>a.recipient===user.id&&!a.seen));if(currentTab==='notes')renderNotes();else if(currentTab==='bulletins')renderBulletins();else if(currentTab==='qcm')renderQCM();else if(currentTab==='mots')renderMots();else if(currentTab==='appreciations')renderAppreciations();else renderAlerts()}
 function renderNotes(){let filters=`<div class="toolbar"><select class="field" onchange="semester=this.value;render()"><option value="1" ${semester==='1'?'selected':''}>Semestre 1</option><option value="2" ${semester==='2'?'selected':''}>Semestre 2</option></select><select class="field" onchange="subject=this.value;render()">${subjects.map(s=>`<option ${subject===s?'selected':''}>${s}</option>`).join('')}</select></div>`;let c=document.getElementById('content');if(user.role==='prof'){c.innerHTML=filters+`<div class="card"><h2>Tableau des élèves</h2><p class="muted">Clique sur ✎ pour créer une évaluation pour un élève.</p><div class="grid">${students.map(s=>`<div class="student"><div class="studentname"><span class="avatar">${s.name[0]}</span><strong>${s.name}</strong></div><button class="pen" title="Évaluer ${s.name}" onclick="openEvalForm('${s.id}')">✎</button></div>`).join('')}</div></div>`+`<div class="card"><h2>Évaluations publiées</h2>${evalCards(data.evaluations.filter(e=>e.semester===semester&&e.subject===subject))}</div>`}else{c.innerHTML=filters+`<div class="card"><h2>Mes évaluations</h2><p class="muted">Clique sur une évaluation pour voir les compétences.</p>${evalCards(data.evaluations.filter(e=>e.student===user.id&&e.semester===semester&&e.subject===subject))}</div>`}}
 function evalCards(list){if(!list.length)return '<p class="muted">Aucune évaluation pour le moment.</p>';return list.slice().reverse().map(e=>`<div class="eval" onclick="viewEval('${e.id}')"><strong>${esc(e.title)}</strong> <span class="muted">· ${esc(e.date)}</span>${user.role==='prof'?`<p class="count">${esc(students.find(s=>s.id===e.student)?.name||'')}</p>`:''}<div class="chips">${e.skills.map(x=>`<span class="chip ${x.level}">${esc(x.label)} · ${esc(levels[x.level])}</span>`).join('')}</div></div>`).join('')}
 function modal(html){document.getElementById('modalHost').innerHTML=`<div class="modalwrap" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modalhead"><h2>${html.title}</h2><button class="close" onclick="closeModal()">✕</button></div>${html.body}</div></div>`}function closeModal(){document.getElementById('modalHost').innerHTML=''}
@@ -37,7 +65,7 @@ function gradeHtml(e){if(classOf(e.student)!=='6A'||!e.grade)return '';const g=e
 function openEvalForm(student){if(user.role!=='prof'||!teacherAllowed(subject))return toast('Matière non autorisée');modal({title:'Nouvelle évaluation',body:`<p class="muted">Élève : ${esc(students.find(s=>s.id===student).name)} · ${esc(subject)} · Semestre ${semester}</p><label>Titre<input id="evalTitle" class="field" maxlength="100" placeholder="Ex. Évaluation de judo"></label><label>Date<input id="evalDate" class="field" type="date" value="${new Date().toISOString().slice(0,10)}"></label>${gradeFields()}<h3>Compétences</h3><div id="skillRows"></div><button class="secondary" onclick="addSkill()">+ Ajouter une compétence</button><p class="count">Maximum 10 compétences</p><button class="primary wide" onclick="publishEval('${student}')">Publier l'évaluation</button>`});addSkill()}
 function addSkill(){let r=document.getElementById('skillRows');if(r.children.length>=10)return toast('Maximum 10 compétences');let d=document.createElement('div');d.className='competence';d.innerHTML=`<input class="field skillName" placeholder="Nom de la compétence" maxlength="120"><select class="field skillLevel">${Object.entries(levels).map(([k,v])=>`<option value="${k}">${esc(v)}</option>`).join('')}</select>`;r.append(d)}
 function publishEval(student){if(!window.scoliaCloudReady)return toast('Attends la connexion à Firebase');if(user.role!=='prof'||!teacherAllowed(subject))return;let title=document.getElementById('evalTitle').value.trim(),date=document.getElementById('evalDate').value,skills=[...document.querySelectorAll('#skillRows .competence')].map(r=>({label:r.querySelector('.skillName').value.trim(),level:r.querySelector('.skillLevel').value})).filter(x=>x.label);if(!title||!date||!skills.length)return toast('Renseigne le titre, la date et une compétence');let grade=gradeValid();if(grade===false)return toast('Vérifie la note, le barème et le coefficient');data.evaluations.push({id:uid(),student,title,date,skills,semester,subject,author:user.name,...(grade?{grade}:{})});notify('Nouvelle évaluation : '+title,student);save();closeModal();render();toast('Évaluation publiée !')}
-function viewEval(id){let e=data.evaluations.find(x=>x.id===id);if(!e)return;modal({title:esc(e.title),body:`<p class="muted">${esc(e.subject)} · ${esc(e.date)} · Semestre ${esc(e.semester)}</p><p class="muted">Publié par ${esc(e.author)}</p>${e.skills.map(s=>`<div class="word"><strong>${esc(s.label)}</strong><div class="chips"><span class="chip ${s.level}">${esc(levels[s.level])}</span></div></div>`).join('')}`})}
+function viewEval(id){let e=data.evaluations.find(x=>x.id===id);if(!e)return;if(user.role==='eleve'&&e.student===user.id&&!data.seenEvaluations?.[user.id]?.[e.id]){data.seenEvaluations??={};data.seenEvaluations[user.id]??={};data.seenEvaluations[user.id][e.id]=true;save();}modal({title:esc(e.title),body:`<p class="muted">${esc(e.subject)} · ${esc(e.date)} · Semestre ${esc(e.semester)}</p><p class="muted">Publié par ${esc(e.author)}</p>${e.skills.map(s=>`<div class="word"><strong>${esc(s.label)}</strong><div class="chips"><span class="chip ${s.level}">${esc(levels[s.level])}</span></div></div>`).join('')}`})}
 function renderMots(){let c=document.getElementById('content');if(user.role==='prof'){c.innerHTML=`<div class="card"><div class="top"><h2>Mots envoyés</h2><button class="primary" onclick="openWordForm()">+ Nouveau mot</button></div>${wordCards(data.mots)}</div>`}else{c.innerHTML=`<div class="card"><h2>Mes mots</h2>${wordCards(data.mots.filter(w=>w.recipients.includes(user.id)))}</div>`}}
 function wordCards(list){if(!list.length)return '<p class="muted">Aucun mot pour le moment.</p>';return list.slice().reverse().map(w=>`<div class="word"><strong>${esc(w.title)}</strong><p>${esc(w.message)}</p><span class="count">${esc(w.author)} · ${esc(w.date)}</span>${user.role==='prof'?`<div class="chips">${w.recipients.map(id=>`<span class="chip ${w.signed?.[id]?'vert':'jaune'}">${esc(students.find(s=>s.id===id)?.name)} : ${w.signed?.[id]?'Signé':'Non signé'}</span>`).join('')}</div>`:w.signed?.[user.id]?'<p class="chip vert" style="display:inline-block">✓ Signé</p>':`<p><button class="primary" onclick="signWord('${w.id}')">Signer</button></p>`}</div>`).join('')}
 function openWordForm(){modal({title:'Nouveau mot',body:`<label>Titre<input class="field" id="wordTitle" maxlength="100" placeholder="Ex. Matériel de sport"></label><label>Message<textarea class="field" id="wordText" rows="5" maxlength="2000" placeholder="Écris le mot..."></textarea></label><strong>Élèves concernés</strong><div class="checks">${classStudents().map(s=>`<label><input type="checkbox" class="recipient" value="${s.id}"> ${esc(s.name)}</label>`).join('')}</div><button class="primary wide" onclick="publishWord()">Envoyer le mot</button>`})}
@@ -58,13 +86,13 @@ function released(){let w=currentWindow();return w.active&&!!w.end&&new Date()>n
 function dateFR(s){return s?new Date(s+'T12:00:00').toLocaleDateString('fr-FR'):'—'}
 function renderNotes(){
  const c=document.getElementById('content'),all=data.evaluations.filter(e=>e.semester===semester&&classOf(e.student)===selectedClass),teachers={'Musique':'M. Sahli','Arts plastiques':'M. Sahli','Sport':'M. El Sahraoui','Football':'M. Gueblaoui','Technologie':'M. Gueblaoui'};
- const semesterBar=`<div class="toolbar"><label style="display:flex;align-items:center;gap:7px">Classe ${user.role==='prof'?`<select class="field" style="margin:0;min-width:135px" onchange="selectedClass=this.value;semester='1';render()"><option value="6A" ${selectedClass==='6A'?'selected':''}>6ème A</option><option value="6B" ${selectedClass==='6B'?'selected':''}>6ème B</option></select>`:`<strong>${classNames[classOf(user.id)]}</strong>`}</label>${user.role==='prof'?`<select class="field" aria-label="Semestre" onchange="semester=this.value;render()"><option value="1" ${semester==='1'?'selected':''}>Semestre 1</option><option value="2" ${semester==='2'?'selected':''}>Semestre 2</option></select>`:`<span class="pill-status">Semestre ${studentSemester()}</span>`}</div>`;
+ const semesterBar=`<div class="toolbar"><label style="display:flex;align-items:center;gap:7px">Classe ${user.role==='prof'?`<select class="field" style="margin:0;min-width:135px" onchange="selectedClass=this.value;semester='1';render()"><option value="6A" ${selectedClass==='6A'?'selected':''}>6ème A</option><option value="6B" ${selectedClass==='6B'?'selected':''}>6ème B</option></select>`:`<strong>${classNames[classOf(user.id)]}</strong>`}</label>${user.role==='prof'?`<select class="field" aria-label="Semestre" onchange="semester=this.value;render()"><option value="1" ${semester==='1'?'selected':''}>Semestre 1</option><option value="2" ${semester==='2'?'selected':''}>Semestre 2</option></select>`:`<select class="field" aria-label="Semestre" onchange="semester=this.value;render()"><option value="1" ${semester==='1'?'selected':''}>Semestre 1</option><option value="2" ${semester==='2'?'selected':''}>Semestre 2</option></select>`}</div>`;
  if(user.role==='prof'){
   const allowed=subjects.filter(teacherAllowed);if(!allowed.includes(subject))subject=allowed[0];const chosen=all.filter(e=>e.subject===subject),groups=new Map();chosen.filter(e=>e.groupId).forEach(e=>{if(!groups.has(e.groupId))groups.set(e.groupId,[]);groups.get(e.groupId).push(e)});
   c.innerHTML=semesterBar+`<div class="card"><h2>Mes matières</h2><div class="subject-list">${allowed.map(s=>`<button class="subject-item ${subject===s?'chosen':''}" onclick="subject='${s}';render()"><span><strong>${esc(s)}</strong><small>${esc(teachers[s])}</small></span><span>›</span></button>`).join('')}</div></div><div class="card"><div class="top" style="flex-wrap:wrap"><div><h2>${esc(subject)} — ${classNames[selectedClass]}</h2><p class="muted">${esc(teachers[subject])} · ${classTeacher(selectedClass)} (professeur principal) · Semestre ${semester}</p></div><button class="primary bigpen" onclick="openBulkEval()">✎ Évaluer toute la classe</button></div><div class="rosterwrap"><table class="roster"><thead><tr><th>Élève</th><th>Résultats</th><th>Stylo</th></tr></thead><tbody>${classStudents().map(st=>`<tr><td><strong>${esc(st.name)}</strong></td><td>${chosen.filter(e=>e.student===st.id).map(e=>`<button class="mark-unit" onclick="viewEval('${e.id}')" title="${esc(e.title)}">${gradeHtml(e)}${dots(e.skills)}</button>`).join('')||'—'}</td><td><button class="pen" onclick="openEvalForm('${st.id}')">✎</button></td></tr>`).join('')}</tbody></table></div></div><div class="card"><h2>Résultats de la classe</h2>${[...groups.values()].reverse().map(classReport).join('')||'<p class="muted">Les statistiques apparaîtront après une évaluation de classe.</p>'}</div>`;
  }else{
-  semester=studentSemester();const own=data.evaluations.filter(e=>e.student===user.id&&e.semester===semester);
-  c.innerHTML=semesterBar+`<div class="card" style="padding:0;overflow:hidden"><div class="rosterwrap"><table class="marks-table"><thead><tr><th>DISCIPLINES</th><th>ÉVALUATIONS</th></tr></thead><tbody>${['Arts plastiques','Musique','Sport'].map(mat=>`<tr><td><strong>${mat==='Musique'?'ÉDUCATION MUSICALE':mat.toUpperCase()}</strong><span class="teacher">${teachers[mat]}</span></td><td><div class="marks">${own.filter(e=>e.subject===mat).map(e=>`<button class="mark-unit" onclick="viewEval('${e.id}')" title="${esc(e.title)}">${gradeHtml(e)}${dots(e.skills)}<span class="mark-title">${esc(e.title)}</span></button>`).join('')||'<span class="muted">—</span>'}</div></td></tr>`).join('')}</tbody></table></div></div>${released()?`<div class="card"><h2>Appréciations du semestre 1</h2>${appreciationReadOnly(user.id)}</div>`:''}`;
+  const own=data.evaluations.filter(e=>e.student===user.id&&e.semester===semester);
+  c.innerHTML=semesterBar+`<div class="card" style="padding:0;overflow:hidden"><div class="rosterwrap"><table class="marks-table"><thead><tr><th>DISCIPLINES</th><th>ÉVALUATIONS</th></tr></thead><tbody>${['Arts plastiques','Musique','Sport','Football','Technologie'].map(mat=>`<tr><td><strong>${mat==='Musique'?'ÉDUCATION MUSICALE':mat.toUpperCase()}</strong><span class="teacher">${teachers[mat]}</span></td><td><div class="marks">${own.filter(e=>e.subject===mat).map(e=>`<button class="mark-unit" onclick="viewEval('${e.id}')" title="${esc(e.title)}">${gradeHtml(e)}${dots(e.skills)}<span class="mark-title">${esc(e.title)}</span>${newMark(e)}</button>`).join('')||'<span class="muted">—</span>'}</div></td></tr>`).join('')}</tbody></table></div></div>${released()?`<div class="card"><h2>Appréciations du semestre 1</h2>${appreciationReadOnly(user.id)}</div>`:''}`;
  }
 }
 function classReport(g){let first=g[0],total=g.reduce((n,e)=>n+e.skills.length,0),count={vert:0,bleu:0,jaune:0,rouge:0};g.forEach(e=>e.skills.forEach(k=>{if(count[k.level]!==undefined)count[k.level]++}));let complete=classStudents().every(s=>g.some(e=>e.student===s.id&&e.skills.length));return `<div class="word"><div style="display:flex;justify-content:space-between;gap:9px;flex-wrap:wrap"><strong>${esc(first.title)}</strong><span class="count">${g.length}/${classStudents().length} élèves évalués ${complete?'✓ Complet':'· En cours'}</span></div>${colorOrder.map(k=>{let pct=total?Math.round(100*count[k]/total):0;return `<div class="statrow"><span class="skillline"><span class="pastille ${k}"></span>${colorNames[k]}</span><div class="barbg"><div class="barfill ${k}" style="width:${pct}%"></div></div><strong>${pct}%</strong></div>`}).join('')}<p class="count">Pourcentages calculés sur ${total} compétences attribuées.</p></div>`}
@@ -72,7 +100,7 @@ function openBulkEval(){if(user.role!=='prof'||!teacherAllowed(subject))return t
 function addBulkSkill(){let r=document.getElementById('bulkSkills');if(r.children.length>=10)return toast('Maximum 10 compétences');let d=document.createElement('div');d.className='skillline';d.innerHTML=`<input class="field bulkSkill" style="flex:1;min-width:180px;margin:4px 0" maxlength="120" placeholder="Nom de la compétence" oninput="renderBulkRoster()"><button class="danger" onclick="this.parentElement.remove();renderBulkRoster()" title="Supprimer">✕</button>`;r.append(d);renderBulkRoster()}
 function renderBulkRoster(){let box=document.getElementById('bulkRoster');if(!box)return;let names=[...document.querySelectorAll('.bulkSkill')].map((x,i)=>({label:x.value.trim()||`Compétence ${i+1}`,i}));let previous={};let prevGrades={};box.querySelectorAll('[data-grade-student]').forEach(x=>prevGrades[x.dataset.gradeStudent+':'+x.dataset.gradeType]=x.value);box.querySelectorAll('select[data-student]').forEach(s=>previous[s.dataset.student+':'+s.dataset.skill]=s.value);box.innerHTML=`<h3>Notation des élèves</h3>${classStudents().map(st=>`<div class="bulkrow"><strong>${esc(st.name)}</strong><div>${selectedClass==='6A'?`<div class="gradeinputs"><label>Note<input class="field" type="number" min="0" step="0.25" data-grade-student="${st.id}" data-grade-type="score" value="${esc(prevGrades[st.id+':score']||'')}" placeholder="Note"></label><label>Sur<input class="field" type="number" min="1" step="0.25" data-grade-student="${st.id}" data-grade-type="max" value="${esc(prevGrades[st.id+':max']||'20')}"></label><label>Coef<input class="field" type="number" min="0.25" step="0.25" data-grade-student="${st.id}" data-grade-type="coef" value="${esc(prevGrades[st.id+':coef']||'1')}"></label></div>`:''}${names.map(n=>`<label style="display:block;font-size:12px;color:#65718c">${esc(n.label)}<select class="field" data-student="${st.id}" data-skill="${n.i}" aria-label="${esc(st.name)} : ${esc(n.label)}"><option value="">— Non évalué —</option>${colorOrder.map(k=>`<option value="${k}" ${previous[st.id+':'+n.i]===k?'selected':''}>${colorNames[k]} · ${esc(levels[k])}</option>`).join('')}</select></label>`).join('')}</div></div>`).join('')}`}
 function publishBulk(){if(!window.scoliaCloudReady)return toast('Attends la connexion à Firebase');if(user.role!=='prof'||!teacherAllowed(subject))return;let title=document.getElementById('bulkTitle').value.trim(),date=document.getElementById('bulkDate').value,skills=[...document.querySelectorAll('.bulkSkill')].map(x=>x.value.trim());if(!title||!date||!skills.length||skills.some(x=>!x))return toast('Indique un titre, une date et le nom de chaque compétence');let entries=classStudents().map(st=>({student:st.id,skills:skills.map((label,i)=>({label,level:document.querySelector(`select[data-student="${st.id}"][data-skill="${i}"]`)?.value})).filter(x=>x.level)}));if(entries.some(e=>!e.skills.length))return toast('Attribue au moins une pastille à chaque élève');if(selectedClass==='6A'){for(const e of entries){const v=t=>document.querySelector(`[data-grade-student="${e.student}"][data-grade-type="${t}"]`)?.value;const score=Number(v('score')),max=Number(v('max')),coef=Number(v('coef'));if(!v('score')||!Number.isFinite(score)||!Number.isFinite(max)||!Number.isFinite(coef)||score<0||max<=0||score>max||coef<=0)return toast('Vérifie les notes, barèmes et coefficients des 3 élèves');e.grade={score,max,coef}}}let groupId=uid();entries.forEach(e=>{data.evaluations.push({id:uid(),groupId,student:e.student,title,date,skills:e.skills,semester,subject,author:user.name,...(e.grade?{grade:e.grade}:{})});notify('Nouvelle évaluation : '+title,e.student)});save();closeModal();render();toast('Évaluation publiée pour la classe !')}
-function viewEval(id){let e=data.evaluations.find(x=>x.id===id);if(!e)return;modal({title:esc(e.title),body:`<p class="muted">${esc(e.subject)} · ${esc(e.date)} · Semestre ${esc(e.semester)}</p><p class="muted">${user.role==='prof'?esc(students.find(s=>s.id===e.student)?.name)+' · ':''}Publié par ${esc(e.author)}</p>${gradeHtml(e)?`<div class="gradebox">Note : ${gradeHtml(e)}</div>`:''}${e.skills.map(s=>`<div class="word"><div class="skillline"><span class="pastille ${s.level}"></span><strong>${esc(s.label)}</strong></div><span class="count">${esc(levels[s.level])}</span></div>`).join('')}`})}
+function viewEval(id){let e=data.evaluations.find(x=>x.id===id);if(!e)return;modal({title:esc(e.title),body:`<p class="muted">${esc(e.subject)} · ${esc(e.date)} · Semestre ${esc(e.semester)}</p><p class="muted">${user.role==='prof'?esc(students.find(s=>s.id===e.student)?.name)+' · ':''}Publié par ${esc(e.author)}</p>${gradeHtml(e)?`<div class="gradebox">Note : ${gradeHtml(e)}</div>${user.role==='prof'?`<button class="secondary" onclick="editQuizGrade('${e.id}')">✎ Modifier la note</button>`:''}`:''}${e.skills.map(s=>`<div class="word"><div class="skillline"><span class="pastille ${s.level}"></span><strong>${esc(s.label)}</strong></div><span class="count">${esc(levels[s.level])}</span></div>`).join('')}`})}
 
 // Appréciations : seule la direction (M. El Sahraoui) active la période.
 function appKey(sem,teacher,student){return [sem,teacher,student].join('|')}
@@ -107,6 +135,150 @@ function renderBulletins(){
  const toolbar=`<div class="toolbar bulletin-toolbar">${isProf?`<label>Classe<select class="field" onchange="selectedClass=this.value;bulletinStudent='';render()"><option value="6A" ${selectedClass==='6A'?'selected':''}>6ème A</option><option value="6B" ${selectedClass==='6B'?'selected':''}>6ème B</option></select></label><label>Élève<select class="field" onchange="bulletinStudent=this.value;render()">${classStudents().map(st=>`<option value="${st.id}" ${st.id===bulletinStudent?'selected':''}>${esc(st.name)}</option>`).join('')}</select></label>`:''}<label>Semestre<select class="field" onchange="bulletinSemester=this.value;render()"><option value="1" ${bulletinSemester==='1'?'selected':''}>Semestre 1</option><option value="2" ${bulletinSemester==='2'?'selected':''}>Semestre 2</option></select></label><button class="secondary bulletin-print" onclick="window.print()">🖨️ Imprimer / PDF</button></div>`;
  document.getElementById('content').innerHTML=toolbar+`<p class="muted bulletin-intro">Bulletin ${isProf?'prévisualisé':'consultable'} à partir des évaluations et appréciations enregistrées dans Firebase. ${selectedClass==='6A'?'Moyennes pondérées par coefficient sur 20.':'Classe évaluée uniquement par compétences.'}</p>`+bulletinFor(bulletinStudent,bulletinSemester);
 }
+
+// ===== SCOLIA QCM : démonstration familiale, Firebase partagé =====
+let quizDraft=[], activeQuizId=null, quizSaving=false;
+function newMark(e){return user?.role==='eleve'&&!data.seenEvaluations?.[user.id]?.[e.id]?'<span class="new-underline" title="Nouvelle évaluation"></span>':''}
+function quizClass(){return user.role==='eleve'?classOf(user.id):selectedClass}
+function renderQCM(){
+ const cls=quizClass(),isProf=user.role==='prof';
+ const bar=isProf?`<div class="toolbar"><label>Classe <select class="field" onchange="selectedClass=this.value;render()"><option value="6A" ${cls==='6A'?'selected':''}>6ème A</option><option value="6B" ${cls==='6B'?'selected':''}>6ème B</option></select></label></div>`:`<p class="pill-status">${esc(classNames[cls])}</p>`;
+ const quizzes=(data.quizzes||[]).filter(q=>q.classId===cls&&(!q.deleted)&&(isProf||q.published));
+ const cards=quizzes.length?quizzes.slice().reverse().map(q=>{
+  const done=(data.quizAttempts||[]).some(a=>a.quizId===q.id&&a.student===user.id);
+  const completed=(data.quizAttempts||[]).filter(a=>a.quizId===q.id).length;
+  return `<div class="eval"><div class="top" style="margin-bottom:8px"><strong>${esc(q.title)}</strong><span class="qcm-tag">${esc(q.subject)} · S${esc(q.semester)}</span></div><p class="muted">${q.questions.length} questions · ${q.questions.reduce((n,x)=>n+Number(x.points||0),0)} points ${isProf?'· '+completed+' réponse(s)':''}</p>${isProf?`<button class="secondary" onclick="showQuizDetails('${q.id}')">📊 Résultats</button> <button class="danger" onclick="deleteQuiz('${q.id}')">Supprimer</button>`:done?'<span class="qcm-tag">✓ Terminé — consulte Notes</span>':`<button class="primary" onclick="startQuiz('${q.id}')">Commencer le QCM</button>`}</div>`
+ }).join(''):'<div class="empty">Aucun QCM pour cette classe.</div>';
+ document.getElementById('content').innerHTML=bar+(isProf?`<div class="card"><h2>Créer un QCM</h2><p class="muted">Questions, réponses, points et compétences. Images et sons possibles.</p><button class="primary" onclick="createQuiz()">+ Créer un QCM</button></div>`:'')+`<div class="card"><h2>${isProf?'QCM de la classe':'Mes QCM'}</h2>${cards}</div>`;
+}
+function createQuiz(){
+ if(user.role!=='prof')return;
+ quizDraft=[{id:uid(),text:'',points:1,answers:['','','',''],correct:0,skills:'',image:'',audio:''}];
+ document.getElementById('content').innerHTML=`<div class="card"><div class="top"><h2>🧠 Nouveau QCM</h2><button class="secondary" onclick="renderQCM()">Retour</button></div><div class="grid"><label>Titre<input class="field" id="qTitle" maxlength="100" placeholder="Ex. Technologie : les objets"></label><label>Classe<select class="field" id="qClass"><option value="6A" ${selectedClass==='6A'?'selected':''}>6ème A</option><option value="6B" ${selectedClass==='6B'?'selected':''}>6ème B</option></select></label><label>Matière<select class="field" id="qSubject">${subjects.filter(teacherAllowed).map(m=>`<option value="${esc(m)}" ${subject===m?'selected':''}>${esc(m)}</option>`).join('')}</select></label><label>Semestre<select class="field" id="qSemester"><option value="1" ${semester==='1'?'selected':''}>Semestre 1</option><option value="2" ${semester==='2'?'selected':''}>Semestre 2</option></select></label><label>Coefficient (6ème A)<input class="field" id="qCoef" type="number" min="0.25" max="20" step="0.25" value="1"></label></div><div class="notice">Les compétences sont séparées par des virgules. Le barème des couleurs est automatique : 🟢 80 %, 🔵 60 %, 🟡 40 %, 🔴 en dessous.</div><div id="quizEditor"></div><div class="qcm-actions"><button class="secondary" onclick="addQuizQuestion()">+ Ajouter une question</button><button class="primary" id="qPublish" onclick="publishQuiz()">Publier le QCM</button></div></div>`;
+ renderQuizEditor();
+}
+function syncQuizDraft(){
+ quizDraft.forEach((q,i)=>{
+  const root=document.getElementById('qed_'+i);if(!root)return;
+  q.text=root.querySelector('[data-qtext]').value;
+  q.points=Number(root.querySelector('[data-points]').value);
+  q.skills=root.querySelector('[data-skills]').value;
+  q.answers=[...root.querySelectorAll('[data-answer]')].map(x=>x.value);
+  q.correct=Number(root.querySelector('[data-correct]:checked')?.value??0);
+  // Les fichiers chargés restent dans quizDraft entre deux questions.
+ });
+}
+function renderQuizEditor(){
+ const el=document.getElementById('quizEditor');if(!el)return;
+ el.innerHTML=quizDraft.map((q,i)=>`<section class="qcm-question" id="qed_${i}"><div class="top"><h3>Question ${i+1}</h3>${quizDraft.length>1?`<button class="danger" onclick="removeQuizQuestion(${i})">Supprimer</button>`:''}</div><label>Énoncé<textarea class="field" data-qtext rows="2" maxlength="400">${esc(q.text)}</textarea></label><label>Points de la question<input class="field" data-points type="number" min="0.25" max="100" step="0.25" value="${q.points}"></label><strong>Réponses — coche la bonne</strong>${q.answers.map((a,j)=>`<div class="qcm-answer-row"><input type="radio" name="correct_${i}" data-correct value="${j}" ${q.correct===j?'checked':''} aria-label="Bonne réponse ${j+1}"><input class="field" data-answer maxlength="250" placeholder="Réponse ${j+1}" value="${esc(a)}"></div>`).join('')}<label>Compétence(s) évaluée(s) — séparées par des virgules<input class="field" data-skills maxlength="300" placeholder="Ex. Identifier les matériaux, Analyser un objet" value="${esc(q.skills)}"></label><label>Image depuis l'ordinateur (facultatif)<input class="field" type="file" accept="image/png,image/jpeg,image/webp" onchange="uploadQuizMedia(${i},'image',this)"></label>${q.image?`<img class="media-preview" src="${esc(q.image)}" alt="Aperçu"><button class="secondary" onclick="removeQuizMedia(${i},'image')">Retirer l'image</button>`:''}<label>Son depuis l'ordinateur (facultatif)<input class="field" type="file" accept="audio/mpeg,audio/ogg,audio/wav,audio/mp4,audio/webm" onchange="uploadQuizMedia(${i},'audio',this)"></label>${q.audio?`<audio controls src="${esc(q.audio)}"></audio><button class="secondary" onclick="removeQuizMedia(${i},'audio')">Retirer le son</button>`:''}<p class="qcm-small">Fichiers de démonstration uniquement. Image compressée automatiquement ; son de 90 Ko maximum. La taille totale Firebase est limitée.</p></section>`).join('');
+}
+function addQuizQuestion(){syncQuizDraft();if(quizDraft.length>=30)return toast('Maximum 30 questions');quizDraft.push({id:uid(),text:'',points:1,answers:['','','',''],correct:0,skills:'',image:'',audio:''});renderQuizEditor()}
+function removeQuizQuestion(i){syncQuizDraft();quizDraft.splice(i,1);renderQuizEditor()}
+function safeMediaUrl(v){
+ if(!v)return true;
+ return /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(v)
+ || /^data:audio\/(mpeg|ogg|wav|mp4|webm);base64,[A-Za-z0-9+/=]+$/.test(v)
+ || (v.length<=1000&&/^https:\/\//.test(v)); // anciens QCM compatibles
+}
+function fileAsDataURL(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(Error('Lecture impossible'));reader.readAsDataURL(file)})}
+async function uploadQuizMedia(i,type,input){
+ const file=input.files?.[0];if(!file)return;
+ if(type==='image'&&!['image/jpeg','image/png','image/webp'].includes(file.type))return toast('Image JPG, PNG ou WEBP uniquement');
+ if(type==='audio'&&!['audio/mpeg','audio/ogg','audio/wav','audio/mp4','audio/webm'].includes(file.type))return toast('Format audio non pris en charge');
+ if(type==='audio'&&file.size>90000){input.value='';return toast('Son trop volumineux : maximum 90 Ko')}
+ if(type==='image'&&file.size>6000000){input.value='';return toast('Image trop volumineuse')}
+ syncQuizDraft();
+ try{
+  if(type==='audio'){quizDraft[i].audio=await fileAsDataURL(file)}
+  else {
+   const url=await fileAsDataURL(file);
+   const img=new Image();img.src=url;await img.decode();
+   const scale=Math.min(1,720/img.width,720/img.height);
+   const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));
+   canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+   let compressed=canvas.toDataURL('image/jpeg',0.66);
+   if(compressed.length>135000)compressed=canvas.toDataURL('image/jpeg',0.35);
+   if(compressed.length>135000)throw Error('Image trop grande après compression');
+   quizDraft[i].image=compressed;
+  }
+  renderQuizEditor();toast('Fichier ajouté à la question');
+ }catch(e){console.error(e);toast('Impossible de charger ce fichier')}
+}
+function removeQuizMedia(i,type){syncQuizDraft();quizDraft[i][type]='';renderQuizEditor()}
+
+async function publishQuiz(){
+ if(quizSaving||!window.scoliaCloudReady)return toast('Attends la connexion à Firebase');if(user.role!=='prof')return;
+ syncQuizDraft();const title=document.getElementById('qTitle').value.trim(),classId=document.getElementById('qClass').value,mat=document.getElementById('qSubject').value,sem=document.getElementById('qSemester').value,coef=Number(document.getElementById('qCoef').value);
+ if(!title||!teacherAllowed(mat)||!['6A','6B'].includes(classId)||!(coef>0&&coef<=20))return toast('Vérifie le titre, la matière et le coefficient');
+ const questions=quizDraft.map(q=>({...q,text:q.text.trim(),skills:q.skills.split(',').map(s=>s.trim()).filter(Boolean)}));
+ if(questions.some(q=>!q.text||!Number.isFinite(q.points)||q.points<=0||q.points>100||q.answers.some(a=>!a.trim())||!q.skills.length||!safeMediaUrl(q.image)||!safeMediaUrl(q.audio)))return toast('Vérifie les questions, réponses, points et fichiers');
+ const entry={id:uid(),title,classId,subject:mat,semester:sem,coef,author:user.name,authorId:user.id,createdAt:new Date().toISOString(),published:true,questions};
+ if(JSON.stringify(entry).length>550000)return toast('QCM trop volumineux pour Firestore : réduis les images ou sons');
+ quizSaving=true;const b=document.getElementById('qPublish');if(b)b.disabled=true;
+ try{await window.scoliaCloudAddQuiz(entry);toast('QCM publié pour la '+classNames[classId]+' !');renderQCM()}catch(e){console.error(e);toast('Erreur Firebase : '+(e.code||e.message));if(b)b.disabled=false}finally{quizSaving=false}
+}
+function startQuiz(id){
+ if(user.role!=='eleve')return;const q=(data.quizzes||[]).find(x=>x.id===id&&x.published&&!x.deleted&&x.classId===classOf(user.id));if(!q)return;
+ if((data.quizAttempts||[]).some(a=>a.quizId===id&&a.student===user.id))return toast('QCM déjà terminé');
+ activeQuizId=id;
+ document.getElementById('content').innerHTML=`<div class="card"><h2>${esc(q.title)}</h2><p class="muted">${esc(q.subject)} · ${q.questions.length} questions · ${q.questions.reduce((n,x)=>n+Number(x.points),0)} points</p><form id="qAnswerForm" onsubmit="event.preventDefault();finishQuiz()">${q.questions.map((item,i)=>`<div class="qcm-question"><h3>${i+1}. ${esc(item.text)}</h3><p class="count">${item.points} point(s)</p>${item.image&&safeMediaUrl(item.image)?`<img class="qcm-media" src="${esc(item.image)}" alt="Illustration de la question" loading="lazy">`:''}${item.audio&&safeMediaUrl(item.audio)?`<audio class="qcm-sound" controls preload="none" src="${esc(item.audio)}"></audio>`:''}${item.answers.map((a,j)=>`<label class="qcm-answer"><input type="radio" name="qa_${i}" value="${j}"> ${esc(a)}</label>`).join('')}</div>`).join('')}<button type="submit" class="primary wide" id="qFinish">Terminer et envoyer mes réponses</button></form></div>`;
+}
+function levelFromPercent(p){return p>=80?'vert':p>=60?'bleu':p>=40?'jaune':'rouge'}
+async function finishQuiz(){
+ if(!window.scoliaCloudReady)return toast('Firebase non connecté');if(user.role!=='eleve'||!activeQuizId||quizSaving)return;
+ const q=(data.quizzes||[]).find(x=>x.id===activeQuizId&&x.published&&!x.deleted&&x.classId===classOf(user.id));if(!q)return toast('QCM introuvable');
+ const answers=q.questions.map((_,i)=>document.querySelector(`input[name="qa_${i}"]:checked`)?.value);
+ if(answers.some(x=>x===undefined))return toast('Réponds à toutes les questions avant de terminer');
+ const total=q.questions.reduce((n,x)=>n+Number(x.points),0);let score=0;const skillTotals={};
+ q.questions.forEach((item,i)=>{const good=Number(answers[i])===Number(item.correct),points=Number(item.points);if(good)score+=points;item.skills.forEach(label=>{skillTotals[label]??={score:0,max:0};skillTotals[label].max+=points;if(good)skillTotals[label].score+=points})});
+ const skills=Object.entries(skillTotals).map(([label,v])=>({label,level:levelFromPercent(100*v.score/v.max)}));
+ const evalId=uid(),attempt={id:uid(),quizId:q.id,student:user.id,answers:answers.map(Number),evaluationId:evalId,at:new Date().toISOString()};
+ const evaluation={id:evalId,student:user.id,title:'QCM — '+q.title,date:new Date().toISOString().slice(0,10),skills,semester:q.semester,subject:q.subject,author:q.author,quizId:q.id,...(q.classId==='6A'?{grade:{score,max:total,coef:q.coef}}:{})};
+ quizSaving=true;const btn=document.getElementById('qFinish');if(btn)btn.disabled=true;
+ try{await window.scoliaCloudSubmitQuiz(attempt,evaluation);activeQuizId=null;document.getElementById('content').innerHTML=`<div class="card" style="text-align:center;padding:42px 20px"><h2>✅ QCM terminé !</h2><p>Tes réponses ont bien été enregistrées.</p><p><strong>📘 Va dans l'onglet « Notes » pour voir ta note et tes compétences.</strong></p><button class="primary" onclick="tab('notes')">Voir mes notes →</button></div>`;}catch(e){console.error(e);toast('Échec de l’envoi : '+(e.code||e.message));if(btn)btn.disabled=false}finally{quizSaving=false}
+}
+function showQuizDetails(id){
+ if(user.role!=='prof')return;
+ const q=(data.quizzes||[]).find(x=>x.id===id);if(!q)return;
+ const attempts=(data.quizAttempts||[]).filter(a=>a.quizId===id);
+ modal({title:'📋 Copies — '+esc(q.title),body:`<p>${esc(classNames[q.classId])} · ${esc(q.subject)} · ${attempts.length} copie(s)</p>${students.filter(s=>classOf(s.id)===q.classId).map(st=>{
+ const a=attempts.find(x=>x.student===st.id);
+ return `<div class="word"><strong>${esc(st.name)}</strong> — ${a?'Terminé':'Non terminé'} ${a?`<button class="secondary" onclick="showStudentCopy('${q.id}','${a.id}')">Consulter la copie</button>`:''}</div>`;
+ }).join('')}`});
+}
+function showStudentCopy(quizId,attemptId){
+ if(user.role!=='prof')return;
+ const q=(data.quizzes||[]).find(x=>x.id===quizId),a=(data.quizAttempts||[]).find(x=>x.id===attemptId);
+ if(!q||!a)return;
+ const st=students.find(x=>x.id===a.student),ev=data.evaluations.find(e=>e.id===a.evaluationId);
+ let points=0,max=0;
+ const rows=q.questions.map((item,i)=>{
+  const picked=Number(a.answers[i]),correct=Number(item.correct),ok=picked===correct;
+  max+=Number(item.points);if(ok)points+=Number(item.points);
+  return `<div class="word"><strong>Question ${i+1} — ${esc(item.text)}</strong><div class="review-answer ${ok?'good':'bad'}">Réponse de l'élève : ${esc(item.answers[picked]??'Sans réponse')} ${ok?'✓':'✗'}</div><div class="review-answer good">Bonne réponse : ${esc(item.answers[correct])}</div><span class="count">${ok?Number(item.points):0} / ${Number(item.points)} point(s)</span></div>`;
+ }).join('');
+ const g=ev?.grade;
+ modal({title:'Copie de '+esc(st?.name||a.student),body:`<p>${esc(q.title)} · ${esc(q.subject)}</p><p><strong>Résultat du QCM : ${points}/${max}</strong></p>${g?`<p>Note enregistrée : <strong>${esc(g.score)}/${esc(g.max)}</strong> · Coef. ${esc(g.coef)}</p><button class="primary" onclick="editQuizGrade('${ev.id}')">✎ Changer la note</button>`:`<p>Classe 6ème B : évaluation par compétences uniquement.</p>`}<h3>Réponses de l'élève</h3>${rows}<button class="secondary" onclick="showQuizDetails('${quizId}')">← Retour aux copies</button>`});
+}
+function editQuizGrade(evaluationId){
+ if(user.role!=='prof')return;
+ const e=data.evaluations.find(x=>x.id===evaluationId);
+ if(!e?.grade||classOf(e.student)!=='6A')return toast('Modification réservée aux notes de 6ème A');
+ modal({title:'✎ Corriger la note',body:`<p><strong>${esc(students.find(s=>s.id===e.student)?.name||'')}</strong> · ${esc(e.title)}</p><p class="muted">Note précédente : ${esc(e.grade.score)}/${esc(e.grade.max)}. Les compétences restent inchangées.</p><label>Nouvelle note<input id="editScore" class="field" type="number" min="0" max="${esc(e.grade.max)}" step="0.25" value="${esc(e.grade.score)}"></label><label>Coefficient<input id="editCoef" class="field" type="number" min="0.25" max="20" step="0.25" value="${esc(e.grade.coef)}"></label><label>Motif de la correction<input id="editReason" class="field" maxlength="200" placeholder="Ex. Erreur de saisie" required></label><button class="primary wide" onclick="saveQuizGrade('${evaluationId}')">Enregistrer la correction</button>`});
+}
+async function saveQuizGrade(evaluationId){
+ if(user.role!=='prof'||!window.scoliaCloudReady||quizSaving)return;
+ const score=Number(document.getElementById('editScore')?.value),coef=Number(document.getElementById('editCoef')?.value),reason=document.getElementById('editReason')?.value.trim();
+ const e=data.evaluations.find(x=>x.id===evaluationId);
+ if(!e?.grade||!reason||!Number.isFinite(score)||score<0||score>e.grade.max||!Number.isFinite(coef)||coef<=0||coef>20)return toast('Vérifie la note, le coefficient et le motif');
+ quizSaving=true;
+ try{
+  await window.scoliaCloudEditGrade(evaluationId,{score,coef,reason,editor:user.name,at:new Date().toISOString()});
+  closeModal();toast('Note corrigée dans Firebase');
+ }catch(err){console.error(err);toast('Erreur Firebase : '+(err.code||err.message))}
+ finally{quizSaving=false}
+}
+async function deleteQuiz(id){if(user.role!=='prof'||!confirm('Masquer ce QCM ? Les notes déjà obtenues seront conservées.'))return;try{await window.scoliaCloudDeleteQuiz(id);toast('QCM masqué')}catch(e){toast('Erreur Firebase : '+e.message)}}
 </script><script type="module">
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
 import {getFirestore,doc,onSnapshot,runTransaction} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
@@ -123,14 +295,45 @@ window.scoliaCloudSave=async state=>runTransaction(db,async tx=>{
   alerts:mergeById(old.alerts,state.alerts),
   appreciations:{...(old.appreciations||{}),...(state.appreciations||{})},
   appWindow:state.appWindow||old.appWindow||{active:false,start:'',end:'',semester:'1'},
-  appWindows:{...(old.appWindows||{}),...(state.appWindows||{})}
+  appWindows:{...(old.appWindows||{}),...(state.appWindows||{})},
+  quizzes:mergeById(old.quizzes,state.quizzes),
+  quizAttempts:mergeById(old.quizAttempts,state.quizAttempts),
+  seenEvaluations:Object.fromEntries([...new Set([...Object.keys(old.seenEvaluations||{}),...Object.keys(state.seenEvaluations||{})])].map(k=>[k,{...(old.seenEvaluations?.[k]||{}),...(state.seenEvaluations?.[k]||{})}]))
  };
  tx.set(ref,{state:merged});
+});
+
+window.scoliaCloudAddQuiz=entry=>runTransaction(db,async tx=>{
+ const snap=await tx.get(ref),old=snap.exists()?(snap.data().state||{}):{};
+ if((old.quizzes||[]).length>=80)throw Error('Limite de 80 QCM atteinte pour la démonstration');
+ tx.set(ref,{state:{...old,quizzes:[...(old.quizzes||[]),entry]}});
+});
+window.scoliaCloudSubmitQuiz=(attempt,evaluation)=>runTransaction(db,async tx=>{
+ const snap=await tx.get(ref),old=snap.exists()?(snap.data().state||{}):{};
+ if((old.quizAttempts||[]).some(a=>a.quizId===attempt.quizId&&a.student===attempt.student))throw Error('QCM déjà terminé');
+ const quiz=(old.quizzes||[]).find(q=>q.id===attempt.quizId&&!q.deleted&&q.published);
+ if(!quiz)throw Error('QCM non disponible');
+ const alerts=[...(old.alerts||[]),{id:attempt.id+'alert',recipient:attempt.student,message:'Nouvelle évaluation QCM : '+quiz.title,at:attempt.at,seen:false}];
+ tx.set(ref,{state:{...old,quizAttempts:[...(old.quizAttempts||[]),attempt],evaluations:[...(old.evaluations||[]),evaluation],alerts}});
+});
+window.scoliaCloudEditGrade=(id,change)=>runTransaction(db,async tx=>{
+ const snap=await tx.get(ref),old=snap.exists()?(snap.data().state||{}):{};
+ const evaluation=(old.evaluations||[]).find(e=>e.id===id);
+ if(!evaluation?.grade)throw Error('Note introuvable');
+ const updated=(old.evaluations||[]).map(e=>e.id!==id?e:{
+  ...e,grade:{...e.grade,score:change.score,coef:change.coef},
+  correctionHistory:[...(e.correctionHistory||[]),{oldScore:e.grade.score,newScore:change.score,oldCoef:e.grade.coef,newCoef:change.coef,reason:change.reason,editor:change.editor,at:change.at}]
+ });
+ tx.set(ref,{state:{...old,evaluations:updated}});
+});
+window.scoliaCloudDeleteQuiz=id=>runTransaction(db,async tx=>{
+ const snap=await tx.get(ref),old=snap.exists()?(snap.data().state||{}):{};
+ tx.set(ref,{state:{...old,quizzes:(old.quizzes||[]).map(q=>q.id===id?{...q,deleted:true}:q)}});
 });
 onSnapshot(ref,s=>{
  const remote=s.exists()?s.data().state:null;
  if(remote){data={evaluations:[],mots:[],alerts:[],appreciations:{},appWindow:{active:false,start:'',end:'',semester:'1'},...remote};}
  window.scoliaCloudReady=true;
- if(user)render();
+ if(user&&!quizSaving&&activeQuizId===null&&!document.getElementById('quizEditor'))render();
 },e=>{window.scoliaCloudReady=false;console.error(e);toast('Firebase bloqué : vérifie les règles Firestore')});
 </script><script>if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister()));</script></body></html>
